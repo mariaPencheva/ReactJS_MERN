@@ -10,9 +10,9 @@ function Catalog() {
   return (
     <div>
         <div className="text">
-            <h1>Let's help</h1>
-            <p>Create your Own task</p>
-            <p>Or help with executing the task</p>
+            <h1>Community Task Catalog</h1>
+            <p>Share Your Needs</p>
+            <p>Offer Your Skills</p>
         </div>
     </div>
   );
