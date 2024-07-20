@@ -1,0 +1,56 @@
+@import "../styles/forms.scss";
+
+.profile-page {
+  background-color: $primary-color;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  height: 100vh;
+  padding: 20px;
+
+  .sidebar {
+    margin-right: 10px;  
+    border-radius: 10px;
+    width: 20%;
+    background-color: $primary-color;
+    height: 100%;
+    box-shadow: 0px 0px 10px -5px $hover-border-color;
+    padding: 10px;
+    
+    .userName {
+      margin-top: 5px;  
+      text-align: center;
+    //   text-decoration-line: underline;
+    //   text-decoration-style:double;
+    }
+
+
+    .navBar {
+        margin-top: 40px;
+        // background-image: url('/det_bott');
+    }
+
+
+    .list-item {
+      text-align: center;
+      align-content: center;
+      margin: 15px;
+    }
+  }
+}
+
+.tasks-container {
+  border-radius: 10px;
+  margin-left: 10px;  
+  width: 80%; 
+  background-color: $primary-color; 
+  height: 100%; 
+  padding: 10px; 
+  box-shadow: 0px 0px 10px -5px $hover-border-color; 
+
+  .tasks-form{
+    margin: 80px;  
+
+  }
+}
+

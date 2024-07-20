@@ -1,0 +1,5 @@
+# Node modules specific to the server
+node_modules
+
+# Build outputs
+*.log

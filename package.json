@@ -1,0 +1,13 @@
+{
+    "name": "taskboard",
+    "version": "1.0.0",
+    "scripts": {
+        "client": "npm --prefix client run dev",
+        "server": "nodemon server/server.js",
+        "dev": "concurrently \"npm run server\" \"npm run client\""
+    },
+    "dependencies": {
+        "concurrently": "^7.6.0",
+        "nodemon": "^2.0.22"
+    }
+}

@@ -1,0 +1,6 @@
+# Node modules specific to the client
+node_modules
+dist
+
+# Build outputs
+*.log

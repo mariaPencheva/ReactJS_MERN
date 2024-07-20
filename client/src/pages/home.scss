@@ -1,0 +1,21 @@
+.text {
+    text-align: center;
+    padding: 20px;
+    background-color: rgb(246, 248, 243);
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    line-height: 10rem;
+
+}
+
+.text-content {
+    margin-top: auto;
+    
+}
+
+.text p {
+    font-size: 1.2rem; 
+    line-height: 1.6rem;
+}

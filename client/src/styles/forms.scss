@@ -1,0 +1,53 @@
+@import 'variables';
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+  
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+  
+    input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid $border-color;
+      border-radius: 10px;
+      box-sizing: border-box;
+      transition: border 0.3s ease;
+      outline: none;
+  
+      &:hover,
+      &.active {
+        border: 1px solid $hover-border-color;
+      }
+    }
+  }
+  
+  button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    font-family: $primary-font;
+    color: $hover-border-color;
+    background-color: $primary-color;
+    border: 1px solid $border-color;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    outline: none;
+  
+    &:hover,
+    &.active {
+      border: 1px solid $hover-border-color;
+    }
+  }
+  
+
+.title-text {
+  text-align: center;
+}
