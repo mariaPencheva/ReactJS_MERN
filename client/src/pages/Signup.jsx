@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { signup } from '../redux/authSlice'; 
+import { useNavigate } from 'react-router-dom';
 import './signup.scss';
 
 const Signup = () => {
@@ -9,6 +11,10 @@ const Signup = () => {
     password: '',
     repass: ''
   });
+
+  const [error, setError] = useState(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -20,32 +26,30 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    //TODO validate email, username and password
+    const emailPattern = /^[^\s@]+@[a-z.]+\.[a-z]+$/;
 
-    if (formData.password !== formData.repass) {
-      alert('Passwords do not match');
+    if (!emailPattern.test(formData.email)) {
+      setError('Invalid email address');
       return;
     }
 
-    try {
-      const response = await axios.post('http://localhost:3000/api/auth/signup', formData, { withCredentials: true });
-
-      if (response.status === 201) {
-        console.log('Registration successful');
-        const signinResponse = await axios.post('http://localhost:3000/api/auth/signin', {
-          email: formData.email,
-          password: formData.password
-        });
-
-        if (signinResponse.status === 200) {
-          localStorage.setItem('token', signinResponse.data.token);
-          window.location.href = '/profile';
-        }
-      }
-    } catch (error) {
-      console.error('Registration failed:', error.response ? error.response.data : error.message);
-      alert('Registration failed. Please try again.');
+    if (formData.password.length < 6) {
+      setError('Password must be at least 6 characters long');
+      return;
     }
+
+    if (formData.password !== formData.repass) {
+      setError('Passwords do not match');
+      return;
+    }
+
+     try {
+    await dispatch(signup(formData)); 
+    navigate('/profile');
+  } catch (err) {
+    console.error('Failed to signup:', err);
+    setError('Registration failed');
+  }
   };
 
   return (
@@ -110,9 +114,9 @@ const Signup = () => {
             />
           </div>
 
-          <div className="form-group">
-            <button type="submit" className="submit-button">Sign Up</button>
-          </div>
+          <button type="submit" className="form-submit-button">Sign Up</button>
+
+          {error && <p className="error-message">{error}</p>}
         </form>
       </div>
     </div>

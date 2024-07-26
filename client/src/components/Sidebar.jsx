@@ -1,11 +1,13 @@
 import React from "react";
+import './sidebar.scss';
 
 const Sidebar = ({ username, onViewChange, currentView }) => {
   return (
     <div className="sidebar">
       <div className="userName">
-        <h2>Welcome back, {username}!</h2>
+        {username ? <h2>Welcome back, {username}!</h2> : <h2>Welcome back!</h2>}
       </div>
+      
       <div className="navBar">
       <nav>
         <div

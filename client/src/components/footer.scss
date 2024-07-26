@@ -1,5 +1,8 @@
+@import '../styles/variables';
+
 .container-footer {
-    background-color: rgb(24, 24, 24);
+    // background-color: rgb(24, 24, 24);
+    background-color: $hover-border-color;
     height: 40px;
     display: flex;
     justify-content: center; 
@@ -8,6 +11,6 @@
   }
   
 .text-footer {
-    color: rgb(246, 248, 243);
+    color: $primary-color;
     // font-size: 0px; 
 }

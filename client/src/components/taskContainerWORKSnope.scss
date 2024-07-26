@@ -1,0 +1,100 @@
+@import '../styles/variables';
+
+.create-task-button {
+  height: 397px;
+  width: auto;
+  background: $primary-color;
+  padding: 1em;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  align-content: center;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  width: 100%;
+  max-width: 400px;
+
+  &:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  h1 {
+    font-size: 2em;
+    margin-bottom: 0.5em;
+  }
+
+  h3 {
+    font-size: 1.2em;
+    color: $hover-border-color;
+  }
+}
+
+//tasks
+.task-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  background-color: $primary-color;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px -5px $hover-border-color;
+  text-align: center;
+  margin-bottom: 20px;
+
+  h3 {
+    margin-bottom: 15px;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
+
+    border-style:solid;
+    border-width: 1px;
+    border-color: $border-color;
+  }
+
+  p {
+    margin: 10px 0;
+  }
+
+  a {
+    display: inline-block;
+    margin: 5px;
+    text-decoration: none;
+    color: $hover-border-color;
+
+    &:hover {
+      color: $hover-border-color;
+    }
+  }
+}
+
+.tasks-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+//container
+.tasks-container {
+    text-align: center;
+    padding: 20px;
+  
+    h2 {
+      margin-top: 5px;
+    }
+  
+    .tasks-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+  }

@@ -1,4 +1,4 @@
-@import '../styles/forms.scss';
+@import '../styles/variables.scss';
 
 .header {
     display: flex;
@@ -17,7 +17,7 @@
         height: 40px; 
         margin-right: 10px; 
       }
-  
+
       h3 {
         color: $hover-border-color;
         font-weight: 600;
@@ -25,7 +25,6 @@
       }
     }
 
-  
     .header__buttons {
       display: flex;
       align-items: center;
@@ -40,16 +39,15 @@
         padding: 10px;
         border: 1px solid $primary-color;
         outline: none;
-        text-decoration:none;
+        text-decoration: none;
   
         &:hover,
         &.active {
           border: 1px solid $hover-border-color;
           border-radius: 10px;
         }
-  
       }
-  
+
       .header__button {
         color: $hover-border-color;
         font-weight: 600;
@@ -72,4 +70,4 @@
         }
       }
     }
-  }
+}

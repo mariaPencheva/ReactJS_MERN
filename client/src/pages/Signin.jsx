@@ -1,34 +1,32 @@
-import React, { useState } from "react";
-import axios from "axios";
-import './signin.scss'
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { signin } from '../redux/authSlice';
+import './signin.scss';
 
 const Signin = () => {
+  const { isLoading, error } = useSelector((state) => state.auth);
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: ''
   });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      const response = await axios.post("http://localhost:3000/api/auth/signin", formData, { withCredentials: true });
-
-      if (response.status === 200) {
-        // console.log("Sign In successful");
-        localStorage.setItem('token', response.data.token);
-        window.location.href = '/profile';
-      }
-    } catch (error) {
-      console.error('Login failed:', error.response ? error.response.data : error.message);
-      alert('Login failed. Please try again.');
+      await dispatch(signin(formData));  //.unwrap();
+      navigate('/profile');
+    } catch (err) {
+      console.error('Failed to login:', err);
     }
   };
 
@@ -36,37 +34,35 @@ const Signin = () => {
     <div className="signin-page">
       <div className="signin-container">
         <form className="signin-form" onSubmit={handleSubmit}>
-          <h2>Sign In</h2>
-
+          <h2>Signin</h2>
           <div className="form-group">
             <label htmlFor="email" className="form-label">Email</label>
             <input
-              type="text"
+              type="email"
               id="email"
               name="email"
-              placeholder="Enter your email"
-              className="form-input"
-              onChange={handleChange}
               value={formData.email}
+              onChange={handleChange}
+              className="form-input"
+              placeholder="Enter your email"
+              required
             />
           </div>
-
           <div className="form-group">
             <label htmlFor="password" className="form-label">Password</label>
             <input
               type="password"
               id="password"
               name="password"
-              placeholder="Enter your password"
-              className="form-input"
-              onChange={handleChange}
               value={formData.password}
+              onChange={handleChange}
+              className="form-input"
+              placeholder="Enter your password"
+              required
             />
           </div>
-
-          <div className="form-group">
-            <button type="submit" className="submit-button">Sign In</button>
-          </div>
+          <button type="submit" className="form-submit-button">Login</button>
+          {error && <p className="error-message">{error}</p>}
         </form>
       </div>
     </div>

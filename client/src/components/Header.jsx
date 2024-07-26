@@ -1,20 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import "./header.scss";
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { clearUser } from '../redux/authSlice';
+import './header.scss';
 
 function Header() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const location = useLocation();
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    setIsAuthenticated(!!token);
-  }, []);
+  const user = useSelector(state => state.auth.user);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    setIsAuthenticated(false);
-    window.location.href = '/';
+    dispatch(clearUser());
+    navigate('/');
   };
 
   return (
@@ -27,8 +26,16 @@ function Header() {
         <Link to="/catalog" className={`header__menu ${location.pathname === '/catalog' ? 'active' : ''}`}>
           Catalog
         </Link>
-
-        {!isAuthenticated ? (
+        {user ? (
+          <>
+            <Link to="/profile" className={`header__menu ${location.pathname === '/profile' ? 'active' : ''}`}>
+              Profile
+            </Link>
+            <button onClick={handleLogout} className="header__button">
+              Logout
+            </button>
+          </>
+        ) : (
           <>
             <Link to="/signin" className={`header__button ${location.pathname === '/signin' ? 'active' : ''}`}>
               Sign In
@@ -36,16 +43,6 @@ function Header() {
             <Link to="/signup" className={`header__button ${location.pathname === '/signup' ? 'active' : ''}`}>
               Sign Up
             </Link>
-          </>
-        ) : (
-          <>
-            <Link to="/profile" className={`header__menu ${location.pathname === '/profile' ? 'active' : ''}`}>
-              Profile
-            </Link>
-
-            <button onClick={handleLogout} className="header__button">
-              Logout
-            </button>
           </>
         )}
       </div>

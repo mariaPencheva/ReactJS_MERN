@@ -1,16 +1,5 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+@import "react-datepicker/dist/react-datepicker.css";
 
-$font-stack: 'Playfair Display';
-body {
-  font-family: $font-stack;
-}
-
-.container {
-  width: 100%; 
-  margin: 0 auto; 
-  padding: 0 20px; 
-}
+@import './styles/variables.scss';
+@import './styles/forms.scss';
+@import './styles/global';

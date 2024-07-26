@@ -1,21 +1,45 @@
-import React from "react";
-import { useLocation } from "react-router-dom";
-import "./catalog.scss";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchTasks, completeTask } from '../redux/taskSlice'; 
+import TaskCard from '../components/TaskCard'; 
+import './catalog.scss';  
 
-function Catalog() {
-  const location = useLocation();
+const Catalog = ({ loggedinUser }) => {
+  const dispatch = useDispatch();
+  const { tasks, isLoading, error } = useSelector((state) => state.tasks);
 
-  const isActive = (path) => location.pathname === path;
+  useEffect(() => {
+    dispatch(fetchTasks()); 
+  }, [dispatch]);
+
+  const handleTaskCompleted = (taskId) => {
+    dispatch(completeTask(taskId)); 
+  };
 
   return (
-    <div>
-        <div className="text">
-            <h1>Community Task Catalog</h1>
-            <p>Share Your Needs</p>
-            <p>Offer Your Skills</p>
-        </div>
+    <div className="catalog">
+      <div className="text">
+        <h1>Community Task Catalog</h1>
+        <p>Share Your Needs, Offer Your Skills</p>
+      </div>
+      <div className="task-catalog">
+        {isLoading && <p>Loading...</p>}
+        {error && <p>Error: {error}</p>}
+        {tasks.length > 0 ? (
+          tasks.map(task => (
+            <TaskCard 
+              key={task._id} 
+              task={task} 
+              isOwner={loggedinUser ? loggedinUser._id === task.createdBy._id : false}
+              onComplete={() => handleTaskCompleted(task._id)} 
+            />
+          ))
+        ) : (
+          <p>No tasks available</p>
+        )}
+      </div>
     </div>
   );
-}
+};
 
 export default Catalog;
