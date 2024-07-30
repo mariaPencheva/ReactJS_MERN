@@ -1,0 +1,62 @@
+@import '../utils/variables';
+@import '../utils/mixins';
+
+.reviews-section {
+    padding: 60px; 
+    background-color: $primary-color; 
+    text-align: center;
+    
+
+    h1 {
+        padding-bottom: 40px;
+    }
+}
+
+.slick-track {
+    display: flex !important;
+    gap: 20px !important;
+    overflow: visible !important;
+    
+}
+
+.review {
+  background-color: $primary-color; 
+  @include border-radius(10px);
+  padding: 25px ;
+  
+  max-height: 100px !important;
+  min-height: 100px !important;
+  max-width: 900px;
+
+  text-align: justify;
+  @include box-shadow($hover-border-color);
+  transition: box-shadow 0.3s ease;
+  
+}
+
+.review:hover {
+    cursor: pointer !important;
+    transform: translateY(-10px) !important;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2) !important;
+    max-height: max-content !important ;
+}
+
+.review-author {
+    font-weight: bold;
+    color: #333;
+}
+
+.slick-prev:before, .slick-next:before {
+    background-color: $primary-color;
+    color: black !important;
+}
+
+.slick-arrow, .slick-prev, .slick-next {
+    background: $primary-color !important;
+    color: black !important;
+}
+
+.slick-prev, .slick-next {
+    background-color: $primary-color;
+    color: black !important;
+}

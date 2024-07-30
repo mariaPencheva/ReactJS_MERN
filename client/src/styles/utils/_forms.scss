@@ -1,0 +1,65 @@
+@import './variables';
+@import './mixins';
+
+.form-group {
+  margin-bottom: 20px;
+  text-align: left;
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid $border-color;
+    @include border-radius(10px);
+    box-sizing: border-box;
+    transition: border 0.3s ease;
+    outline: none;
+
+    .file{
+      align-items: center;  
+    }
+
+    &:hover,
+    &:focus {
+      border: 1px solid $hover-border-color !important;
+    }
+  }
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between; 
+  gap: 10px; 
+}
+
+button {
+  padding: 10px;
+  font-size: 16px;
+  background-color: $hover-border-color;
+  color: $primary-color;
+  border: 1px solid $hover-border-color;
+  @include border-radius(10px);
+  cursor: pointer;
+  @include transition(background-color, 0.3s, ease);
+  outline: none;
+
+  // &:hover,
+  // &:focus {
+  //   border: 1px solid $hover-border-color !important;
+  // }
+}
+
+.submit-button, .cancel-button {
+  flex: 1; 
+}
+
+.cancel-button {
+  background-color: lighten($primary-color, 10%); 
+}
+

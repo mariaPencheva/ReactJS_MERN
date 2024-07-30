@@ -15,8 +15,16 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-export const signup = (user) => api.post('/auth/signup', user);
-export const signin = (user) => api.post('/auth/signin', user);
+export const signup = (user) => api.post('/auth/signup', user)
+  .then(response => {
+    localStorage.setItem('token', response.data.token);
+    return response;
+  });
+export const signin = (user) => api.post('/auth/signin', user)
+  .then(response => {
+    localStorage.setItem('token', response.data.token);
+    return response;
+  });
 export const fetchProfile = () => api.get('/auth/profile');
 export const fetchTasks = () => api.get('/tasks');
 export const createTask = (taskData) => api.post('/tasks', taskData, { headers: { 'Content-Type': 'multipart/form-data' } });
@@ -28,3 +36,5 @@ export const getCompletedTasks = () => api.get('/tasks/completed');
 export const getCreatedTasks = () => api.get('/tasks/created');
 export const getTakenTasks = () => api.get('/tasks/taken');
 export const getTaskDetails = (id) => api.get(`/tasks/${id}`);
+
+export default api;

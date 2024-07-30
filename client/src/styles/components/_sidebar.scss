@@ -1,0 +1,21 @@
+@import '../utils/variables';
+@import '../utils/mixins';
+
+.navBar .list-item {
+  padding: 10px;
+  margin: 5px 0;
+  @include border-radius(10px);
+  transition: all 0.3s ease;
+
+  &:hover,
+  &:focus,
+  &.active {
+    cursor: pointer !important;
+    background-color: $primary-color !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2) !important;
+    // color: $primary-color !important;
+  }
+  
+}
+

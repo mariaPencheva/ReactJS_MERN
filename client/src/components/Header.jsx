@@ -2,7 +2,6 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { clearUser } from '../redux/authSlice';
-import './header.scss';
 
 function Header() {
   const dispatch = useDispatch();

@@ -10,6 +10,9 @@ import ProfilePage from './pages/ProfilePage';
 import NotFound from './pages/404';
 import Catalog from './pages/Catalog';
 import Footer from './components/Footer';
+import TaskDetails from './components/TaskDetails'
+import PrivateRoute from './components/PrivateRoute';
+import './index.scss';
 
 function App() {
   const dispatch = useDispatch();
@@ -28,8 +31,13 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/signin" element={<Signin />} />
-        <Route path="/profile" element={<ProfilePage />} />
+        
+        <Route path="/" element={<PrivateRoute />}>
+          <Route path="profile" element={<ProfilePage />} />
+        </Route>
+
         <Route path="/catalog" element={<Catalog />} />
+        <Route path="/tasks/:id" element={<TaskDetails />} /> 
 
         <Route path="*" element={<NotFound />} />
 
@@ -40,3 +48,8 @@ function App() {
 }
 
 export default App;
+
+
+       // <Route path="/profile" 
+        //   element={<PrivateRoute element={<ProfilePage />} />} 
+        // />

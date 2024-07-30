@@ -1,5 +1,4 @@
 import React from "react";
-import './sidebar.scss';
 
 const Sidebar = ({ username, onViewChange, currentView }) => {
   return (

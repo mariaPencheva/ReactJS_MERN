@@ -1,7 +1,6 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import Reviews from '.././components/Reviews';
-import "./home.scss";
 
 function Home() {
   const location = useLocation();

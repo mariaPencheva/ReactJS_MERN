@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { signup } from '../redux/authSlice'; 
 import { useNavigate } from 'react-router-dom';
-import './signup.scss';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -44,13 +43,14 @@ const Signup = () => {
     }
 
      try {
-    await dispatch(signup(formData)); 
-    navigate('/profile');
-  } catch (err) {
-    console.error('Failed to signup:', err);
-    setError('Registration failed');
-  }
-  };
+        console.log('Submitting form data:', formData);
+        await dispatch(signup(formData));
+        navigate('/profile');
+    } catch (err) {
+      console.error('Failed to signup:', err);
+      setError('Registration failed');
+    }
+    };
 
   return (
     <div className="signup-page">

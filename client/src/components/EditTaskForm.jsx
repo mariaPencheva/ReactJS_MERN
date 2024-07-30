@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import api from '../api';
+import { useDispatch, useSelector } from "react-redux";
+import { updateTask } from "../redux/taskSlice";
 
 const EditTaskModal = ({ task, onClose, onTaskUpdated }) => {
+  const dispatch = useDispatch();
+  const { error, isLoading } = useSelector((state) => state.tasks);
+  
   const [name, setName] = useState(task.name);
   const [description, setDescription] = useState(task.description);
   const [deadline, setDeadline] = useState(new Date(task.deadline));
   const [image, setImage] = useState(null);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     setName(task.name);
@@ -17,7 +20,7 @@ const EditTaskModal = ({ task, onClose, onTaskUpdated }) => {
     setImage(null);
   }, [task]);
 
-const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const formData = new FormData();
@@ -25,36 +28,17 @@ const handleSubmit = async (e) => {
     formData.append("description", description);
     formData.append("deadline", deadline.toISOString());
     if (image) {
-        formData.append("image", image);
+      formData.append("image", image);
     }
 
-     for (const [key, value] of formData.entries()) {
-    // console.log(`${key}: ${value}`);
-}
-    try {
-        const token = localStorage.getItem("token");
-
-        if (!token) {
-            setError("You need to be logged in to update the task.");
-            return;
-        }
-
-        const updatedTask = await api.updateTask(task._id, formData);
-        // console.log('Task ID:', task._id);
-        // console.log('Task name:', task.name);
-        // console.log('Task cretor:', task.createdBy.username);
-
-        if (updatedTask) {
-            onTaskUpdated(); 
-            onClose();       
-        } else {
-            setError("Error updating task");
-        }
+   try {
+      await dispatch(updateTask({ id: task._id, taskData: formData })).unwrap();
+      onTaskUpdated();
+      onClose();
     } catch (err) {
-        console.error('Error:', err);
-        setError("Error updating task");
+      console.error('Error:', err.message);
     }
-};
+  };
 
   return (
     <div className="modal-overlay">
@@ -99,7 +83,7 @@ const handleSubmit = async (e) => {
             <input type="file" onChange={(e) => setImage(e.target.files[0])} />
           </div>
           <div className="form-group button-group">
-            <button type="submit">Save Changes</button>
+            <button type="submit" disabled={isLoading}>Save Changes</button>
             <button type="button" onClick={onClose}>
               Cancel
             </button>

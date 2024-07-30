@@ -1,79 +1,41 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
-import api from '../api';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchTaskDetails, completeTask, takeTask, deleteTask } from '../redux/taskSlice';
 import EditTaskForm from './EditTaskForm';
-import './taskDetails.scss';
 
 const TaskDetails = () => {
     const { id } = useParams();
-    const [task, setTask] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-    const [loggedinUser, setLoggedinUser] = useState(null);
+    const dispatch = useDispatch();
     const navigate = useNavigate();
+    const task = useSelector((state) => state.tasks.taskDetails);
+    const loggedinUser = useSelector((state) => state.auth.user);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
     useEffect(() => {
-        const fetchTask = async () => {
-            try {
-                const token = localStorage.getItem('token');
+        console.log('Fetching details for id:', id);
 
-                if (token) {
-                    const userResponse = await api.getUserProfile(token);
-                    setLoggedinUser(userResponse.data);
-                }
+        dispatch(fetchTaskDetails(id));
+    }, [dispatch, id]);
 
-                const taskResponse = await api.getTask(id);
-                if (taskResponse) {
-                    setTask(taskResponse.data);
-                } else {
-                    setError('Task not found');
-                    navigate('/NotFound');
-                }
-            } catch (err) {
-                setError('Error fetching task');
-                navigate('/NotFound');
-            } finally {
-                setLoading(false);
-            }
-        };
+    useEffect(() => {}, [task]);
 
-        fetchTask();
-    }, [id, navigate]);
-
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>{error}</div>;
+    if (!task) return <div>Loading...</div>;
 
     const handleTakeTask = async () => {
-        if (!loggedinUser) return;
-
-        try {
-            const result = await api.takeTask(id, localStorage.getItem('token'));
-            if (result) {
-                setTask(prevTask => ({ ...prevTask, takenBy: loggedinUser }));
-            } else {
-                console.error('Failed to take task');
-            }
-        } catch (err) {
-            console.error('Error taking task:', err);
+        if (loggedinUser) {
+            await dispatch(takeTask(id));
+            dispatch(fetchTaskDetails(id));
         }
     };
 
     const handleFinishTask = async () => {
-        if (!loggedinUser) return;
-
-        try {
-            await api.completeTask(id, localStorage.getItem('token'));
+        if (loggedinUser) {
+            await dispatch(completeTask(id));
+            dispatch(fetchTaskDetails(id));
             navigate(`/profile?view=completedTasks`);
-        } catch (err) {
-            console.error('Error completing task:', err);
         }
     };
-
-    const isOwner = task?.createdBy && loggedinUser?._id === task.createdBy._id;
-    const isTaskTaken = task?.takenBy !== null;
-    const isTaskCompleted = task?.completed; 
-    const takenByUser = task?.takenBy?.username;
 
     const handleEditClick = () => {
         if (loggedinUser) {
@@ -85,22 +47,17 @@ const TaskDetails = () => {
         setIsEditModalOpen(false);
     };
 
-    const handleTaskUpdated = async () => {
-        const data = await api.getTask(id);
-        setTask(data);
-    };
-
     const handleDeleteClick = async () => {
-        if (!loggedinUser) return;
-
-        try {
-            await api.deleteTask(id, localStorage.getItem('token'));
-            navigate('/NotFound');
-        } catch (err) {
-            console.error('Error deleting task:', err);
+        if (loggedinUser) {
+            await dispatch(deleteTask(id));
+            navigate('/catalog');
         }
     };
 
+    const isOwner = task?.createdBy && loggedinUser?._id === task.createdBy._id;
+    const isTaskTaken = task?.takenBy !== null;
+    const isTaskCompleted = task?.completed; 
+    const takenByUser = task?.takenBy?.username;
     const imageUrl = task.image ? `http://localhost:3000/uploads/${task.image}` : '/No_Image_Available.jpg';
 
     return (
@@ -156,7 +113,7 @@ const TaskDetails = () => {
                         <EditTaskForm
                             task={task}
                             onClose={handleCloseModal}
-                            onTaskUpdated={handleTaskUpdated}
+                            onTaskUpdated={() => dispatch(fetchTaskDetails(id))}
                         />
                     </div>
                 </div>

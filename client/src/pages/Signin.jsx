@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { signin } from '../redux/authSlice';
-import './signin.scss';
 
 const Signin = () => {
   const { isLoading, error } = useSelector((state) => state.auth);
@@ -22,8 +21,11 @@ const Signin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      await dispatch(signin(formData));  //.unwrap();
+      // console.log('Submitting form data:', formData);
+
+      await dispatch(signin(formData)).unwrap(); 
       navigate('/profile');
     } catch (err) {
       console.error('Failed to login:', err);

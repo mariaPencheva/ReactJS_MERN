@@ -6,6 +6,7 @@ const initialState = {
   token: localStorage.getItem('token') || null,
   isLoading: false,
   error: null,
+  isAuthenticated: !!localStorage.getItem('token'),
 };
 
 export const signup = createAsyncThunk(
@@ -20,6 +21,7 @@ export const signup = createAsyncThunk(
     }
   }
 );
+
 
 export const signin = createAsyncThunk(
   'auth/signin',
@@ -53,6 +55,7 @@ const authSlice = createSlice({
     clearUser: (state) => {
       state.user = null;
       state.token = null;
+      state.isAuthenticated = false;
       localStorage.removeItem('token');
     },
   },
@@ -60,38 +63,45 @@ const authSlice = createSlice({
     builder
       .addCase(signup.pending, (state) => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(signup.fulfilled, (state, action) => {
+        state.isLoading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
-        state.isLoading = false;
+        state.isAuthenticated = true;
+        localStorage.setItem('token', action.payload.token);
       })
       .addCase(signup.rejected, (state, action) => {
-        state.error = action.payload;
         state.isLoading = false;
+        state.error = action.payload ? action.payload.message : action.error.message;
       })
       .addCase(signin.pending, (state) => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(signin.fulfilled, (state, action) => {
+        state.isLoading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
-        state.isLoading = false;
+        state.isAuthenticated = true;
+        localStorage.setItem('token', action.payload.token);
       })
       .addCase(signin.rejected, (state, action) => {
-        state.error = action.payload;
         state.isLoading = false;
+        state.error = action.payload ? action.payload.message : action.error.message;
       })
       .addCase(fetchProfile.pending, (state) => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(fetchProfile.fulfilled, (state, action) => {
-        state.user = action.payload;
         state.isLoading = false;
+        state.user = action.payload;
       })
       .addCase(fetchProfile.rejected, (state, action) => {
-        state.error = action.payload;
         state.isLoading = false;
+        state.error = action.payload;
       });
   },
 });

@@ -1,5 +1,26 @@
 @import "react-datepicker/dist/react-datepicker.css";
 
-@import './styles/variables.scss';
-@import './styles/forms.scss';
-@import './styles/global';
+@import './styles/utils/variables';
+@import './styles/utils/forms';
+@import './styles/utils/mixins';
+
+@import './styles/base/reset';
+@import './styles/base/typography';
+@import './styles/base/styles';
+
+@import './styles/components/buttons';
+@import './styles/components/footer';
+@import './styles/components/header';
+@import './styles/components/reviews';
+@import './styles/components/sidebar';
+@import './styles/components/taskCard';
+@import './styles/components/taskDetails';
+@import './styles/components/taskContainer';
+@import './styles/components/modal';
+
+@import './styles/pages/home';
+@import './styles/pages/catalog';
+@import './styles/pages/profile';
+@import './styles/pages/signin';
+@import './styles/pages/signup';
+@import './styles/pages/404';

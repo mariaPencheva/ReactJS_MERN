@@ -1,0 +1,84 @@
+@import '../utils/variables';
+@import '../utils/mixins';
+
+button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    font-family: $primary-font;
+    color: $primary-color;
+    background-color: $hover-border-color;
+    border: 1px solid $border-color;
+    @include border-radius(10px);
+    cursor: pointer;
+    @include transition(background-color, 0.3s, ease);
+    outline: none;
+  
+    &:hover,
+    &.active {
+      border: 1px solid $hover-border-color;
+    }
+  }
+  
+  .not-clickable {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    font-size: 18px;
+    font-family: $primary-font;
+    border-color: none;
+    margin-bottom: 10px;
+    cursor: auto;
+    color: $hover-border-color;
+    background-color: $hover-opacity-black;
+    // border-radius: 10px;
+    // transition: background-color 0.3s ease;
+    @include border-radius(10px);
+    @include transition(background-color, 0.3s, ease);
+    outline: none;
+  
+    &:hover {
+      border-color: none !important;
+    }
+  }
+
+  // btn create new task in profile
+.create-task-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 397px;
+  width: 100%; 
+  max-width: 300px; 
+  background: $primary-color;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s, color 0.3s;
+  cursor: pointer;
+  // margin: 20px auto; /* Добавяне на отстояние и центриране */
+
+  &:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    
+    h1, h3 {
+      color: $hover-opacity-black; 
+    }
+  }
+  
+  h1 {
+    font-size: 2em;
+    margin-bottom: 0.5em;
+    color: $opacity-black;
+  }
+  
+  h3 {
+    font-size: 1.2em;
+    color: $opacity-black;
+  }
+}
+  

@@ -1,0 +1,17 @@
+@mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  @mixin box-shadow($color) {
+    box-shadow: 0px 0px 10px -5px $color;
+  }
+  
+  @mixin border-radius($radius) {
+    border-radius: $radius;
+  }
+  
+  @mixin transition($properties, $duration, $timing) {
+    transition: $properties $duration $timing;
+  }

@@ -1,0 +1,85 @@
+@import '../utils/variables';
+
+.text, .info-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background-color: $primary-color;
+    padding-bottom: 60px;
+}
+
+.info-container h1 {
+    margin-bottom: 40px;
+}
+
+.info-boxes,
+.steps {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    justify-content:center;
+    align-items: stretch;
+
+    text-align: justify;
+}
+
+.info {
+    background-color: $primary-color;
+    border-radius: 10px;
+    @include box-shadow($hover-border-color);
+    padding: 20px;
+    max-width: 300px;
+    flex-grow: 1; 
+    display: flex;
+    flex-direction: column; 
+}
+
+.info h3 {
+    text-align: center; 
+    margin-bottom: 10px; 
+}
+
+.info p {
+    flex-grow: 1; 
+    text-align: justify;
+}
+
+.text p {
+    font-size: 1.2rem; 
+    line-height: 1.5rem;
+}
+
+.how-it-works {
+    background-color: $hover-border-color; 
+    color: $primary-color; 
+    padding: 20px;
+    padding-bottom: 80px;
+    text-align: center;
+
+    h1 {
+    color: $primary-color;
+    margin-bottom: 30px;
+    }
+}
+
+.step {
+    background-color: #222; 
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 300px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}    
+
+.step h3 {
+    text-align: center;
+    margin-bottom: 10px; 
+}
+
+.step p {
+    flex-grow: 1;
+    text-align: justify; 
+}
+

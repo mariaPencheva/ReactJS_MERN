@@ -1,0 +1,41 @@
+@import '../utils/forms';
+@import '../utils/variables';
+@import '../utils/mixins';
+
+
+.signin-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $primary-color;
+  min-height: 100vh;
+  
+}
+
+.signin-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.signin-form { 
+  width: 400px;
+  padding: 20px;
+  background-color: $primary-color;
+  @include border-radius(10px);
+  @include box-shadow($hover-border-color);
+  text-align: center;
+}
+
+.signin-form h2 {
+  margin-bottom: 20px;
+}
+
+//TODO
+// @media (max-width: 768px) {
+//     .signin-form {
+//       width: 90%;
+//       padding: 15px;
+//     }
+//   }

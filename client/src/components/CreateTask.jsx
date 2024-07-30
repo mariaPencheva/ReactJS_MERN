@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import {createTask} from '../api.js';
 
 const CreateTask = ({ onClose, onTaskCreated }) => {
   const [name, setName] = useState("");
@@ -30,23 +31,22 @@ const CreateTask = ({ onClose, onTaskCreated }) => {
       return;
     }
 
-    try {
-      const response = await axios.post("/api/tasks", formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${token}`
-        }
-      });
+    formData.forEach((value, key) => {
+      console.log(`${key}: ${value}`);
+    });
 
-      if (response.status === 201) {
+    try {
+      const response = await createTask(formData);
+
+      if (response.status === 201 || response.status === 200) {
         alert("Task created successfully!");
-        onTaskCreated();
-        onClose();
+        if (onTaskCreated) onTaskCreated();
+        if (onClose) onClose();
       } else {
         alert("Failed to create task. Please try again.");
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error:", error.response ? error.response.data : error.message);
       alert("An error occurred. Please try again.");
     }
   };
@@ -96,7 +96,7 @@ const CreateTask = ({ onClose, onTaskCreated }) => {
           <div className="form-group button-group">
           <button type="submit">Create</button>
           <button type="button" onClick={onClose}>Cancel</button>
-          </div>
+          </div>  
         </form>
       </div>
     </div>

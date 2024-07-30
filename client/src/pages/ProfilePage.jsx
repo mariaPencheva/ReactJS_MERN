@@ -4,7 +4,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { fetchProfile } from '../redux/authSlice';
 import Sidebar from '../components/Sidebar';
 import TasksContainer from '../components/TasksContainer';
-import './profile.scss';
 
 const ProfilePage = () => {
   const dispatch = useDispatch();

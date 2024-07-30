@@ -1,0 +1,34 @@
+@import '../utils/forms';
+@import '../utils/variables';
+@import '../utils/mixins';
+
+
+.signup-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; 
+  background-color: $primary-color;
+
+}
+
+.signup-form { 
+  width: 400px;
+  padding: 20px;
+  background-color: $primary-color;
+  @include border-radius(10px);
+  @include box-shadow($hover-border-color);
+  text-align: center;
+}
+
+.signup-form h2 {
+  margin-bottom: 20px;
+}
+
+//TODO
+// @media (max-width: 768px) {
+//   .signup-form {
+//     width: 50%;
+//     padding: 15px;
+//   }
+// }
