@@ -1,21 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  fetchTasks,
-  fetchCompletedTasks,
-  completeTask,
-  fetchTakenTasks,
-  fetchCreatedTasks,
-  createTask
-} from '../redux/taskSlice';
-import CreateTask from "./CreateTask";
-import TaskCard from './TaskCard';
+import { allTasks, completedTasks, completeTask, takenTasks, createdTasks, createTask } from '../redux/taskSlice';
+import CreateTask from "../components/CreateTask";
+import TaskCard from '../components/TaskCard';
 
 const TasksContainer = ({ view }) => {
   const dispatch = useDispatch();
   const tasks = useSelector((state) => state.tasks.tasks || []);
-  const takenTasks = useSelector((state) => state.tasks.takenTasks || []);
-  const completedTasks = useSelector((state) => state.tasks.completedTasks || []);
+  const createdTasksArr = useSelector((state) => state.tasks.createdTasks || []);
+  const takenTasksArr = useSelector((state) => state.tasks.takenTasks || []);
+  const completedTasksArr = useSelector((state) => state.tasks.completedTasks || []); 
   const user = useSelector((state) => state.auth.user);
   const isLoading = useSelector((state) => state.tasks.isLoading);
   const error = useSelector((state) => state.tasks.error);
@@ -23,15 +17,24 @@ const TasksContainer = ({ view }) => {
 
   useEffect(() => {
     if (view === 'createdTasks') {
-      dispatch(fetchCreatedTasks());
+      dispatch(createdTasks());
     } else if (view === 'takenTasks') {
-      dispatch(fetchTakenTasks());
+      dispatch(takenTasks());
     } else if (view === 'completedTasks') {
-      dispatch(fetchCompletedTasks());
+      // dispatch(completedTasks());
+      dispatch(completedTasks()).then((response) => {
+      console.log('Completed tasks response:', response)});
     } else {
-      dispatch(fetchTasks());
+      dispatch(allTasks());
     }
   }, [view, dispatch]);
+
+  // console.log('Redux tasks:', tasks);
+  // console.log('==================');
+  // console.log('Current view:', view);
+  // console.log('Redux createdTasks:', createdTasksArr);
+  // console.log('Redux takenTasksArr:', takenTasksArr);
+  // console.log('Redux completedTasksArr:', completedTasksArr);
 
   const getNoTasksMessage = () => {
     if (view === 'createdTasks') {
@@ -45,18 +48,20 @@ const TasksContainer = ({ view }) => {
     }
   };
 
-  const currentTasks = view === 'completedTasks' ? completedTasks :
-                        view === 'takenTasks' ? takenTasks :
-                        view === 'createdTasks' ? tasks.filter(task => task.createdBy._id === user._id) :
+  const currentTasks = view === 'completedTasks' ? completedTasksArr :
+                        view === 'takenTasks' ? takenTasksArr :
+                        view === 'createdTasks' ? createdTasksArr /*tasks.filter(task => task.createdBy._id === user._id)*/ :
                         tasks;
+
+  console.log('Current Tasks:', currentTasks);
 
   const handleTaskCreated = (task) => {
     setShowCreateTaskForm(false);
     dispatch(createTask(task)).then(() => {
       if (view === 'createdTasks') {
-        dispatch(fetchCreatedTasks());
+        dispatch(createdTasks());
       } else {
-        dispatch(fetchTasks());
+        dispatch(allTasks());
       }
     });
   };
@@ -64,9 +69,9 @@ const TasksContainer = ({ view }) => {
   const handleTaskCompletion = (taskId) => {
     dispatch(completeTask(taskId)).then(() => {
       if (view === 'completedTasks') {
-        dispatch(fetchCompletedTasks());
+        dispatch(completedTasks());
       } else {
-        dispatch(fetchTasks());
+        dispatch(allTasks());
       }
     });
   };
@@ -79,7 +84,7 @@ const TasksContainer = ({ view }) => {
          view === 'completedTasks' ? 'Finished Tasks' :
          'Tasks'}
       </h2>
-      {error && <div className="error">Error: {error}</div>}
+      {error && <div className="error">Error from TasksContainer: {error}</div>}
       {isLoading ? <div className="loading">Loading...</div> : (
         <>
           <p className="no-tasks-message">

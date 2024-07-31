@@ -1,22 +1,33 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchTasks, completeTask } from '../redux/taskSlice'; 
+import { allIncompletedTasks, completeTask } from '../redux/taskSlice'; 
 import TaskCard from '../components/TaskCard'; 
 
 const Catalog = () => {
-  const dispatch = useDispatch();
-  const { tasks, isLoading, error } = useSelector((state) => state.tasks);
-  const loggedinUser = useSelector((state) => state.auth.user);
+  // const dispatch = useDispatch();
+  // const { tasks, isLoading, error } = useSelector((state) => state.tasks);
+  // const loggedinUser = useSelector((state) => state.auth.user);
+    const dispatch = useDispatch();
+    const { incompletedTasks, isLoading, error } = useSelector((state) => state.tasks);
+    const loggedinUser = useSelector((state) => state.auth.user);
 
   useEffect(() => {
-    dispatch(fetchTasks()); 
+    dispatch(allIncompletedTasks());
   }, [dispatch]);
+
+
+  // useEffect(() => {
+  //   // console.log('Tasks from Redux:', tasks);
+  //   dispatch(allTasks()); 
+  // }, [dispatch]);
 
   const handleTaskCompleted = (taskId) => {
     dispatch(completeTask(taskId)); 
   };
 
-  const activeTasks = tasks.filter(task => !task.completed);
+  // const activeTasks = tasks.filter(task => !task.completed);
+  // console.log('Active Tasks:', activeTasks);
+
 
   // console.log('Active Tasks:', activeTasks);
   // console.log('Error:', error);
@@ -30,9 +41,9 @@ const Catalog = () => {
       </div>
       <div className="task-catalog">
         {isLoading && <p>Loading...</p>}
-        {error && <p>Error: {error}</p>}
-        {activeTasks.length > 0 ? (
-          activeTasks.map(task => (
+        {error && <p>Error from Catalog: {error}</p>}
+        {incompletedTasks.length > 0 ? (
+          incompletedTasks.map(task => (
             <TaskCard 
               key={task._id} 
               task={task} 

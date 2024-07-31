@@ -31,9 +31,9 @@ const CreateTask = ({ onClose, onTaskCreated }) => {
       return;
     }
 
-    formData.forEach((value, key) => {
-      console.log(`${key}: ${value}`);
-    });
+    // formData.forEach((value, key) => {
+    //   console.log(`${key}: ${value}`);
+    // });
 
     try {
       const response = await createTask(formData);

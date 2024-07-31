@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { signup as apiSignup, signin as apiSignin, fetchProfile as apiFetchProfile } from '../api';
+import { signup as apiSignup, signin as apiSignin, currProfile as apiCurrProfile } from '../api';
 
 const initialState = {
   user: null,
@@ -36,11 +36,11 @@ export const signin = createAsyncThunk(
   }
 );
 
-export const fetchProfile = createAsyncThunk(
-  'auth/fetchProfile',
+export const currProfile = createAsyncThunk(
+  'auth/currProfile',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await apiFetchProfile();
+      const response = await apiCurrProfile();
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response ? error.response.data : error.message);
@@ -91,15 +91,15 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload ? action.payload.message : action.error.message;
       })
-      .addCase(fetchProfile.pending, (state) => {
+      .addCase(currProfile.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(fetchProfile.fulfilled, (state, action) => {
+      .addCase(currProfile.fulfilled, (state, action) => {
         state.isLoading = false;
         state.user = action.payload;
       })
-      .addCase(fetchProfile.rejected, (state, action) => {
+      .addCase(currProfile.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });

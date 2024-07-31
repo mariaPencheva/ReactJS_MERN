@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchProfile } from './redux/authSlice';
+import { currProfile } from './redux/authSlice';
 import Header from './components/Header';
 import Home from './pages/Home';
 import Signup from './pages/Signup';
@@ -10,7 +10,7 @@ import ProfilePage from './pages/ProfilePage';
 import NotFound from './pages/404';
 import Catalog from './pages/Catalog';
 import Footer from './components/Footer';
-import TaskDetails from './components/TaskDetails'
+import TaskDetails from './pages/TaskDetails'
 import PrivateRoute from './components/PrivateRoute';
 import './index.scss';
 
@@ -20,7 +20,7 @@ function App() {
 
   React.useEffect(() => {
     if (token) {
-      dispatch(fetchProfile());
+      dispatch(currProfile());
     }
   }, [dispatch, token]);
 

@@ -7,6 +7,8 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
+    // console.log('Stored token:', token);
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -25,8 +27,8 @@ export const signin = (user) => api.post('/auth/signin', user)
     localStorage.setItem('token', response.data.token);
     return response;
   });
-export const fetchProfile = () => api.get('/auth/profile');
-export const fetchTasks = () => api.get('/tasks');
+export const currProfile = () => api.get('/auth/profile');
+export const allTasks = () => api.get('/tasks');
 export const createTask = (taskData) => api.post('/tasks', taskData, { headers: { 'Content-Type': 'multipart/form-data' } });
 export const updateTask = (id, taskData) => api.put(`/tasks/${id}`, taskData, { headers: { 'Content-Type': 'multipart/form-data' } });
 export const deleteTask = (id) => api.delete(`/tasks/${id}`);
@@ -36,5 +38,9 @@ export const getCompletedTasks = () => api.get('/tasks/completed');
 export const getCreatedTasks = () => api.get('/tasks/created');
 export const getTakenTasks = () => api.get('/tasks/taken');
 export const getTaskDetails = (id) => api.get(`/tasks/${id}`);
+
+// export const getCatalogTasks = () => api.get('/tasks/catalog');
+
+// export const archiveTasks = (id) => api.post(`/tasks/${id}/archive`);
 
 export default api;

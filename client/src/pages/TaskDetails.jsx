@@ -1,21 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchTaskDetails, completeTask, takeTask, deleteTask } from '../redux/taskSlice';
-import EditTaskForm from './EditTaskForm';
+import { taskDetails, completeTask, /*completedTasks,*/ takeTask, deleteTask } from '../redux/taskSlice';
+import EditTaskForm from '../components/EditTaskForm';
 
 const TaskDetails = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const task = useSelector((state) => state.tasks.taskDetails);
+    // const completedTasksArr = useSelector((state) => state.tasks.completedTasks || []);
     const loggedinUser = useSelector((state) => state.auth.user);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
     useEffect(() => {
-        console.log('Fetching details for id:', id);
+        // console.log('Fetching details for id:', id);
+        // dispatch(taskDetails(id)).then((result) => {
+        // console.log('Task Details:', result.payload);
+    // });
 
-        dispatch(fetchTaskDetails(id));
+        dispatch(taskDetails(id));
     }, [dispatch, id]);
 
     useEffect(() => {}, [task]);
@@ -25,14 +29,14 @@ const TaskDetails = () => {
     const handleTakeTask = async () => {
         if (loggedinUser) {
             await dispatch(takeTask(id));
-            dispatch(fetchTaskDetails(id));
+            dispatch(taskDetails(id));
         }
     };
 
     const handleFinishTask = async () => {
         if (loggedinUser) {
             await dispatch(completeTask(id));
-            dispatch(fetchTaskDetails(id));
+            dispatch(taskDetails(id));
             navigate(`/profile?view=completedTasks`);
         }
     };
@@ -58,6 +62,11 @@ const TaskDetails = () => {
     const isTaskTaken = task?.takenBy !== null;
     const isTaskCompleted = task?.completed; 
     const takenByUser = task?.takenBy?.username;
+
+    const completedByYou = task?.completedBy?._id === loggedinUser?._id;
+    const completedByUser = task?.completedBy?.username || 'undefined';
+    // console.log(`Completed By: ${completedByUser} from TD react`);
+
     const imageUrl = task.image ? `http://localhost:3000/uploads/${task.image}` : '/No_Image_Available.jpg';
 
     return (
@@ -75,6 +84,9 @@ const TaskDetails = () => {
                         <p>Description: {task.description}</p>
                         <p>Deadline: {new Date(task.deadline).toLocaleDateString()}</p>
                         <p>Created by: {isOwner ? 'you' : task.createdBy.username}</p>
+                        
+                        {isTaskCompleted && <p>Completed by: {completedByYou ? 'you' : completedByUser}</p>}
+
                         {loggedinUser && (
                             <div className="task-actions">
                                 {isTaskCompleted ? (
@@ -113,7 +125,7 @@ const TaskDetails = () => {
                         <EditTaskForm
                             task={task}
                             onClose={handleCloseModal}
-                            onTaskUpdated={() => dispatch(fetchTaskDetails(id))}
+                            onTaskUpdated={() => dispatch(taskDetails(id))}
                         />
                     </div>
                 </div>
@@ -123,3 +135,5 @@ const TaskDetails = () => {
 };
 
 export default TaskDetails;
+
+//{isTaskCompleted && <p>Completed by: {completedByYou ? 'you' : completedByUser}</p>}

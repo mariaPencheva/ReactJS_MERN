@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { fetchProfile } from '../redux/authSlice';
+import { currProfile } from '../redux/authSlice';
+import { createdTasks, takenTasks, completedTasks /*, archiveTasks*/ } from '../redux/taskSlice';
+
 import Sidebar from '../components/Sidebar';
-import TasksContainer from '../components/TasksContainer';
+import TasksContainer from '../pages/TasksContainer';
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
@@ -21,11 +23,30 @@ const ProfilePage = () => {
 
   useEffect(() => {
     if (token) {
-      dispatch(fetchProfile());
+      dispatch(currProfile());
     } else {
       navigate('/signin');
     }
   }, [token, dispatch, navigate]);
+
+  useEffect(() => {
+    switch (currentView) {
+      case 'createdTasks':
+        dispatch(createdTasks());
+        break;
+      case 'takenTasks':
+        dispatch(takenTasks());
+        break;
+      case 'completedTasks':
+        dispatch(completedTasks());
+        break;
+      /*case 'archive':
+        dispatch(fetchArchiveTasks());
+        break;*/
+      default:
+        break;
+    }
+  }, [currentView, dispatch]);
 
   const handleViewChange = (view) => {
     setCurrentView(view);
