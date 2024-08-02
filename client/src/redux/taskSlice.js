@@ -33,10 +33,8 @@ export const allTasks = createAsyncThunk(
 
       const tasks = response.data;
       const uniqueTasks = Array.from(new Set(tasks.map(task => task._id)))
-        .map(id => tasks.find(task => task._id === id));
-        
-        // console.log('Unique Tasks:', uniqueTasks);
-        return uniqueTasks;
+      .map(id => tasks.find(task => task._id === id));
+    return uniqueTasks;
     } catch (error) {
       return rejectWithValue(error.response ? error.response.data : error.message);
     }
@@ -227,7 +225,7 @@ const taskSlice = createSlice({
           })
           .addCase(createTask.rejected, (state, action) => {
             state.isLoading = false;
-            state.error = action.error.message;
+            state.error = action.payload;
           })
           .addCase(updateTask.pending, (state) => {
             state.isLoading = true;
@@ -242,7 +240,7 @@ const taskSlice = createSlice({
           })
           .addCase(updateTask.rejected, (state, action) => {
             state.isLoading = false;
-            state.error = action.error.message;
+            state.error = action.payload;
           })
           .addCase(deleteTask.pending, (state) => {
             state.isLoading = true;
@@ -254,32 +252,28 @@ const taskSlice = createSlice({
           })
           .addCase(deleteTask.rejected, (state, action) => {
             state.isLoading = false;
-            state.error = action.error.message;
+            state.error = action.payload;
           })
           .addCase(takeTask.fulfilled, (state, action) => {
-              const index = state.tasks.findIndex(task => task.id === action.payload.id);
-              if (index !== -1) {
-                  state.tasks[index] = action.payload;
-              }
+            const index = state.tasks.findIndex(task => task._id === action.payload._id);
+            if (index !== -1) {
+              state.tasks[index] = action.payload;
+            }
           })
           .addCase(completeTask.pending, (state) => {
             state.isLoading = true;
-            
           })
           .addCase(completeTask.fulfilled, (state, action) => {
             state.isLoading = false;
-
             state.tasks = state.tasks.map(task =>
               task._id === action.payload._id ? action.payload : task
             );
-
             state.createdTasks = state.createdTasks.filter(task => task._id !== action.payload._id);
-
             state.completedTasks.push(action.payload);
           })
           .addCase(completeTask.rejected, (state, action) => {
             state.isLoading = false;
-            state.error = action.error.message;
+            state.error = action.payload;
           })
           .addCase(allIncompletedTasks.pending, (state) => {
             state.isLoading = true;
@@ -295,8 +289,11 @@ const taskSlice = createSlice({
           .addCase(taskDetails.fulfilled, (state, action) => {
             state.taskDetails = action.payload;
           })
+          .addCase(taskDetails.rejected, (state, action) => {
+            state.error = action.payload;
+          })
           .addCase(createdTasks.fulfilled, (state, action) => {
-              state.createdTasks = action.payload;
+            state.createdTasks = action.payload;
           })
           .addCase(completedTasks.pending, (state) => {
             state.isLoading = true;
@@ -307,7 +304,7 @@ const taskSlice = createSlice({
           })
           .addCase(completedTasks.rejected, (state, action) => {
             state.isLoading = false;
-            state.error = action.error.message;
+            state.error = action.payload;
           })
           .addCase(takenTasks.pending, (state) => {
             state.isLoading = true;
@@ -318,9 +315,8 @@ const taskSlice = createSlice({
           })
           .addCase(takenTasks.rejected, (state, action) => {
             state.isLoading = false;
-            state.error = action.error.message;
+            state.error = action.payload;
           })
-          //todo
           .addCase(getAllArchivedTasks.pending, (state) => {
             state.isLoading = true;
             state.error = null;
@@ -331,7 +327,7 @@ const taskSlice = createSlice({
           })
           .addCase(getAllArchivedTasks.rejected, (state, action) => {
             state.isLoading = false;
-            state.error = action.error.message;
+            state.error = action.payload;
           });
   }
 });

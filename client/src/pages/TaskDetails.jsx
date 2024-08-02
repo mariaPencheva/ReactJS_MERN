@@ -61,9 +61,9 @@ const TaskDetails = () => {
 
     const completedByYou = task?.completedBy?._id === loggedinUser?._id;
     const completedByUser = task?.completedBy?.username || 'undefined';
+    
     const imageUrl = task.image ? `http://localhost:3000/uploads/${task.image}` : '/No_Image_Available.jpg';
 
-//todo make completed by : like taken by - like btn
     return (
         <div className="page-details">
             <div className="text">
@@ -80,12 +80,13 @@ const TaskDetails = () => {
                         <p><strong>Deadline:</strong> {new Date(task.deadline).toLocaleDateString()}</p>
                         <p><strong>Created by:</strong> {isOwner ? 'you' : (task.createdBy ? task.createdBy.username : 'Unknown')}</p>
                         
-                        {isTaskCompleted && <p><strong>Completed by:</strong> {completedByYou ? 'you' : completedByUser}</p>}
 
                         {loggedinUser && (
                             <div className="task-actions">
                                 {isTaskCompleted ? (
-                                    <button className="not-clickable">Completed</button>
+                                    <div className="not-clickable">
+                                        {loggedinUser?._id === task?.completedBy?._id ? 'Completed by you' : `Completed by: ${completedByUser}`}
+                                    </div>
                                 ) : (
                                     <>
                                         {isOwner && (

@@ -1,52 +1,102 @@
 # ReactJS_MERN
 My first fullstack project
 
-This repository will contain the Task Board application for my course at SoftUni - ReactJS.
+This repository contains the Task Board application for my course at SoftUni - ReactJS. The app allows logged-in users to create, view, and manage tasks. 
 
-## Installation and Setup
 
-1. Clone the repository:
+## Table of Contents
 
-    ```sh
-    git clone https://github.com/your-username/ReactJS_MERN.git
-    cd ReactJS_MERN
-    ```
+- [Project Overview](#project-overview)
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Getting Started](#getting-started)
+- [Import Data](#import-initial-data)
+- [Run The Project](#run-the-project-locally)
+- [Usage](#usage)
+- [Contributing](#contributing)
 
-2. Install the dependencies:
+## Project Overview
 
-    ```sh
-    npm install
-    ```
+Task Board is a collaborative platform where users can post tasks ranging from household chores to project creation. Logged-in users can create tasks, claim tasks, and see their task lists categorized as taken, created, completed, and archived with their own completed tasks. Unregistered users can view tasks but cannot interact with them.
 
-3. Start the development server and client simultaneously using `concurrently`:
 
-    ```sh
-    npm run dev
-    ```
+## Features
 
-## Importing Initial Data
-### Using MongoDB Compass
+- **User Authentication**: Secure login and registration for user-specific actions.
+- **Task Management**: Users can create, view, claim, edit, and delete tasks.
+- **Task Categories**: Tasks are categorized into taken, created, completed, and archived.
+- **User-Specific Views**: Logged-in users can see and manage their own tasks.
 
-1. **Download and Install MongoDB Compass:**
-   - If you don't have MongoDB Compass, download it from [here](https://www.mongodb.com/try/download/compass) and install it on your computer.
 
-2. **Connect to MongoDB:**
+## Technologies Used
+
+- **Frontend**: React.js
+- **Backend**: Node.js, Express.js
+- **Database**: MongoDB
+- **Libraries/Frameworks**: Redux Toolkit, React Router, Axios
+- **Styling**: SCSS
+
+
+## Getting Started
+
+To set up and run the project locally, follow these steps:
+
+1. **Clone the repository:**
+
+   ```sh
+   git clone https://github.com/mariaPencheva/ReactJS_MERN.git
+   cd ReactJS_MERN
+   ```
+
+2. **Install the dependencies for the backend:**
+
+   ```sh
+   cd server
+   npm install
+   ```
+
+3. **Install the dependencies for the frontend:**
+
+   ```sh
+   cd ../client
+   npm install   
+   ```
+
+
+## Import Initial Data
+
+1. **Connect to MongoDB:**
+
    - Open MongoDB Compass and connect to your MongoDB server using the connection URI, typically `mongodb://localhost:27017`.
 
-3. **Create or Select Database:**
-   - If the `DB-TEST-TaskBoard` database does not exist, create it by clicking on **Create Database**.
-   - Enter the database name `DB-TEST-TaskBoard` and the first collection name (e.g., `tasks`), then click **Create Database**.
+2. **Navigate to the data directory:**
 
-4. **Import Data:**
-   - **Import `tasks`:**
-     - Select the `tasks` collection within the `DB-TEST-TaskBoard` database.
-     - Click on **Add Data** and then **Import File**.
-     - Choose the `tasks.json` file from your local directory and ensure the format is set to JSON Array.
-     - Click **Import** to load the data.
+   ```sh
+   cd ../data
+   ```
 
-   - **Import `users`:**
-     - If the `users` collection does not exist, create it by clicking on **Create Collection** and entering the name `users`.
-     - Select the `users` collection and click on **Add Data** and then **Import File**.
-     - Choose the `users.json` file and ensure the format is set to JSON Array.
-     - Click **Import** to load the data.
+3. **Run the script to initialize the database:**
 
+   - node initData.js
+
+## Run the project locally   
+
+1. **Start the development server and client simultaneously using `concurrently`:**
+
+   cd ../
+   npm run dev
+
+
+## Usage
+
+1. **Register/Login**: Create an account or log in with your existing credentials.
+2. **Create Tasks**: Use the interface to add new tasks to your board.
+3. **Claim Tasks**: Claim tasks to take ownership and manage them.
+4. **Manage Tasks**: Edit, delete, or mark tasks as completed.
+
+
+## Contributing
+
+Feel free to contribute to this project by submitting a pull request. Please ensure that your changes are well-tested and documented. For larger changes, consider opening an issue to discuss the proposed modifications before making them.
+
+Enjoy using Task Board to organize and collaborate on tasks efficiently!

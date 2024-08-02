@@ -190,24 +190,13 @@ const completeTask = async (req, res) => {
       await creator.save();
     }
 
-    try {
-      await task.save();
-    } catch (taskSaveError) {
-      console.error("Error saving task:", taskSaveError);
-      return res.status(500).send("Error saving task");
-    }
-
-    try {
-      await user.save();
-    } catch (userSaveError) {
-      console.error("Error saving user:", userSaveError);
-      return res.status(500).send("Error saving user");
-    }
+    await task.save();
+    await user.save();
 
     const populatedTask = await Task.findById(taskId)
       .populate("createdBy", "username email")
       .populate("takenBy", "username email")
-      .populate("completedBy", "username");
+      .populate("completedBy", "username email");
 
     if (populatedTask.completedBy) {
       populatedTask.completedBy = {
@@ -258,7 +247,9 @@ const getArchivedTasks = async (req, res) => {
       const tasks = await Task.find({
         createdBy: userId,
         completed: true
-      }).populate('completedBy', 'username');
+      })
+      .populate("createdBy", "username email")
+      .populate('completedBy', 'username email');
   
       const archivedTasks = tasks.filter(task => !task.completedBy || !task.completedBy._id.equals(userId));
   
