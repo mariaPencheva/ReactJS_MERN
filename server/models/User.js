@@ -4,7 +4,7 @@ const userSchema = new Schema({
     username: {
         type: String,
         required: true,
-        // unique: true
+        unique: true
     },
     email: {
         type: String,
@@ -19,13 +19,17 @@ const userSchema = new Schema({
         type: Types.ObjectId,
         ref: 'Task'
     }],
+    takenTasks: [{
+        type: Types.ObjectId,
+        ref: 'Task'
+    }],
     completedTasks: [{
         type: Types.ObjectId,
         ref: 'Task'
     }],
-    takenTasks: [{
-        type: Types.ObjectId,
-        ref: 'Task'
+    archivedTasks: [{
+      type: Types.ObjectId,
+      ref: 'Task'
     }]
  });
  

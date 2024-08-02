@@ -10,15 +10,9 @@ import {
   getCreatedTasks as apiGetCreatedTasks,
   getTakenTasks as apiGetTakenTasks,
   getTaskDetails as apiGetTaskDetails,
-  /*archiveTasks as apiArchiveTasks*/
+  getArchivedTasks as apiGetArchivedTasks
 } from '../api';
 
-// const initialState = {
-//   tasks: [],
-//   isLoading: false,
-//   error: null,
-//   taskDetails: null,
-// };
 const initialState = {
   tasks: [],
   isLoading: false,
@@ -39,14 +33,10 @@ export const allTasks = createAsyncThunk(
 
       const tasks = response.data;
       const uniqueTasks = Array.from(new Set(tasks.map(task => task._id)))
-      .map(id => {
-        return tasks.find(task => task._id === id);
-      });
-    
-    // console.log('Unique Tasks:', uniqueTasks);
-      return uniqueTasks;
-
-      // return response.data;
+        .map(id => tasks.find(task => task._id === id));
+        
+        // console.log('Unique Tasks:', uniqueTasks);
+        return uniqueTasks;
     } catch (error) {
       return rejectWithValue(error.response ? error.response.data : error.message);
     }
@@ -56,16 +46,10 @@ export const allTasks = createAsyncThunk(
 
 export const createTask = createAsyncThunk(
   'tasks/createTask',
-  async (taskData, { /*dispatch,*/ rejectWithValue }) => {
+  async (taskData, { rejectWithValue }) => {
     try {
       const response = await apiCreateTask(taskData);
-      // console.log('TaskSlice: Creating task with data:', taskData);
 
-      // const newTask = response.data;
-      // dispatch(allTasks()); 
-      // dispatch(createdTasks()); 
-      // dispatch(takenTasks()); 
-      // dispatch(completedTasks()); 
       return response.data;
 
     } catch (error) {
@@ -112,13 +96,9 @@ export const takeTask = createAsyncThunk(
 
 export const completeTask = createAsyncThunk(
   'tasks/completeTask',
-  async (id, { /*dispatch,*/ rejectWithValue }) => {
+  async (id, { rejectWithValue }) => {
     try {
       const response = await apiCompleteTask(id);
-      // dispatch(allTasks());
-      // dispatch(takenTasks());
-      // dispatch(completedTasks());
-
       return response.data;
       
     } catch (error) {
@@ -126,21 +106,6 @@ export const completeTask = createAsyncThunk(
     }
   }
 );
-// export const completeTask = createAsyncThunk(
-//   'tasks/completeTask',
-//   async (taskId, { getState, rejectWithValue }) => {
-//     try {
-//       const { user } = getState().auth;
-//       const response = await apiCompleteTask(taskId);
-//       return {
-//         ...response.data,
-//         completedBy: user, 
-//       };
-//     } catch (error) {
-//       return rejectWithValue(error.response ? error.response.data : error.message);
-//     }
-//   }
-// );
 
 export const createdTasks = createAsyncThunk(
   'tasks/createdTasks',
@@ -154,9 +119,12 @@ export const createdTasks = createAsyncThunk(
 
       const response = await apiGetCreatedTasks();
       
-      const userCreatedTasks = response.data.filter(task => task.createdBy._id === user._id);
+      const userCreatedTasks = response.data.filter(task => 
+        task.createdBy._id === user._id && !task.completed
+      );
 
       return userCreatedTasks;
+
     } catch (error) {
       return rejectWithValue(error.response ? error.response.data : error.message);
     }
@@ -179,41 +147,12 @@ export const takenTasks = createAsyncThunk(
   }
 );
 
-// export const completedTasks = createAsyncThunk(
-//   'tasks/completedTasks',
-//   async (_, { getState, rejectWithValue }) => {
-//     try {
-//       const { user } = getState().auth;
-//       if (!user) {
-//         throw new Error('User not logged in');
-//       }
-//       const response = await apiGetCompletedTasks();
-
-    
-//       // const completedByID = response.data.map(task => task.completedBy._id);
-//       // const completedByUsername = response.data.map(task => task.completedBy.username);
-//       // console.log(`Completed By IDs: ${completedByID.join(', ')}, Usernames: ${completedByUsername.join(', ')} from TS redux.`);
-//       // console.log('Response data from TS redux.:', response.data);
-
-//       return response.data.filter(task => task.completedBy._id === user._id);
-
-//     } catch (error) {
-//       return rejectWithValue(error.response ? error.response.data : error.message);
-//     }
-//   }
-// );
 
 export const completedTasks = createAsyncThunk(
   'tasks/completedTasks',
   async (_, { rejectWithValue }) => {
     try {
-       const response = await apiGetCompletedTasks();
-
-      // const completedByID = response.data.map(task => task.completedBy._id);
-      // const completedByUsername = response.data.map(task => task.completedBy.username);
-      // console.log(`Completed By IDs: ${completedByID.join(', ')}, Usernames: ${completedByUsername.join(', ')} from TS redux.`);
-      // console.log('Response data from TS redux.:', response.data);
-
+      const response = await apiGetCompletedTasks();
       return response.data;
 
     } catch (error) {
@@ -227,40 +166,12 @@ export const taskDetails = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       const response = await apiGetTaskDetails(id);
-
-      // console.log('Response data from TS redux.:', response.data);
-
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response ? error.response.data : error.message);
     }
   } 
 );
-
-//todo
-// export const archivedTasks = createAsyncThunk(
-//   'tasks/archivedTasks',
-//   async (_, { getState, rejectWithValue }) => {
-//     try {
-//       const { user } = getState().auth;
-//       const response = await apiGetCreatedTasks();
-//       return response.data.filter(task => task.createdBy._id === user._id && task.archived);
-//     } catch (error) {
-//       return rejectWithValue(error.response ? error.response.data : error.message);
-//     }
-//   }
-// );
-// export const archiveTask = createAsyncThunk(
-//   'tasks/archiveTask',
-//   async (id, { rejectWithValue }) => {
-//     try {
-//       const response = await apiArchiveTasks(id);
-//       return response.data;
-//     } catch (error) {
-//       return rejectWithValue(error.response ? error.response.data : error.message);
-//     }
-//   }
-// );
 
 export const allIncompletedTasks = createAsyncThunk(
   'tasks/allIncompletedTasks',
@@ -271,6 +182,18 @@ export const allIncompletedTasks = createAsyncThunk(
 
       const incompletedTasks = tasks.filter(task => !task.completed);
       return incompletedTasks;
+    } catch (error) {
+      return rejectWithValue(error.response ? error.response.data : error.message);
+    }
+  }
+);
+
+export const getAllArchivedTasks = createAsyncThunk(
+  'tasks/getAllArchivedTasks',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await apiGetArchivedTasks();    
+      return response.data;
     } catch (error) {
       return rejectWithValue(error.response ? error.response.data : error.message);
     }
@@ -349,25 +272,17 @@ const taskSlice = createSlice({
             state.tasks = state.tasks.map(task =>
               task._id === action.payload._id ? action.payload : task
             );
-            // state.tasks = state.tasks.filter(task => task._id !== action.payload._id);
-            // state.takenTasks = state.takenTasks.filter(task => task._id !== action.payload._id);
-            // state.completedTasks.push(action.payload);
-          })
-          // .addCase(completeTask.fulfilled, (state, action) => {
-          //   state.isLoading = false;
-          //   const completedTask = action.payload;
-          //   state.tasks = state.tasks.map(task => 
-          //     task._id === completedTask._id ? completedTask : task
-          //   );
-          //   if (completedTask.createdBy._id === state.auth.user._id) {
-          //     state.archiveTasks.push(completedTask);
-          //     state.createdTasks = state.createdTasks.filter(task => task._id !== completedTask._id);
-          //   }
-          // })
 
+            state.createdTasks = state.createdTasks.filter(task => task._id !== action.payload._id);
+
+            state.completedTasks.push(action.payload);
+          })
+          .addCase(completeTask.rejected, (state, action) => {
+            state.isLoading = false;
+            state.error = action.error.message;
+          })
           .addCase(allIncompletedTasks.pending, (state) => {
             state.isLoading = true;
-            state.error = null;
           })
           .addCase(allIncompletedTasks.fulfilled, (state, action) => {
             state.isLoading = false;
@@ -377,11 +292,6 @@ const taskSlice = createSlice({
             state.isLoading = false;
             state.error = action.payload;
           })
-
-          .addCase(completeTask.rejected, (state, action) => {
-            state.isLoading = false;
-            state.error = action.error.message;
-          })
           .addCase(taskDetails.fulfilled, (state, action) => {
             state.taskDetails = action.payload;
           })
@@ -390,7 +300,6 @@ const taskSlice = createSlice({
           })
           .addCase(completedTasks.pending, (state) => {
             state.isLoading = true;
-            // state.error = null;
           })
           .addCase(completedTasks.fulfilled, (state, action) => {
             state.isLoading = false;
@@ -410,25 +319,20 @@ const taskSlice = createSlice({
           .addCase(takenTasks.rejected, (state, action) => {
             state.isLoading = false;
             state.error = action.error.message;
-          });
+          })
           //todo
-          // .addCase(archivedTasks.pending, (state) => {
-          //   state.isLoading = true;
-          //   state.error = null;
-          // })
-          // .addCase(archivedTasks.fulfilled, (state, action) => {
-          //   state.isLoading = false;
-          //   state.archivedTasks = action.payload;
-          // })
-          // .addCase(archivedTasks.rejected, (state, action) => {
-          //   state.isLoading = false;
-          //   state.error = action.error.message;
-          // })
-          // .addCase(archiveTask.fulfilled, (state, action) => {
-          //   const archivedTask = action.payload;
-          //   state.tasks = state.tasks.filter(task => task._id !== archivedTask._id);
-          //   state.archivedTasks.push(archivedTask);
-          // });
+          .addCase(getAllArchivedTasks.pending, (state) => {
+            state.isLoading = true;
+            state.error = null;
+          })
+          .addCase(getAllArchivedTasks.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.archivedTasks = action.payload;
+          })
+          .addCase(getAllArchivedTasks.rejected, (state, action) => {
+            state.isLoading = false;
+            state.error = action.error.message;
+          });
   }
 });
 

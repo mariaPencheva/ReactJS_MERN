@@ -63,7 +63,7 @@
             flex-direction: column;
 
             h2 {
-                margin-top: 0;
+                margin-top: 0; 
             }
 
             p {
@@ -80,7 +80,6 @@
         display: flex;
         gap: 20px;
         justify-content: center;
-        // margin-top: 20px;
         margin-bottom: 10px;
 
         button {
@@ -92,10 +91,6 @@
             @include border-radius(10px);
             cursor: pointer;
             @include transition(background-color, 0.3s, ease);
-
-            // &:hover {
-            //     background-color: darken($hover-border-color, 10%);
-            // }
         }
 
         

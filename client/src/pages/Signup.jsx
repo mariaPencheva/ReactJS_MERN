@@ -43,7 +43,6 @@ const Signup = () => {
     }
 
      try {
-        console.log('Submitting form data:', formData);
         await dispatch(signup(formData));
         navigate('/profile');
     } catch (err) {

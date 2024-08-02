@@ -15,12 +15,10 @@ const taskSchemaIsValid = Joi.object({
         'date.base': 'Deadline must be a valid date!',
         'date.format': 'Deadline must be in ISO format (YYYY-MM-DD)!',
         'any.required': 'Deadline is required!'
-    }),
-    image: Joi.string().required().messages({
-        'any.required': 'Image is required!'
     })
-    // image: Joi.string().uri()
 });   
+
+
 
 const emailPattern = /^[^\s@]+@[a-z]+\.[a-z]+$/;
 

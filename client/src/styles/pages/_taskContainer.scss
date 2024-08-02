@@ -1,0 +1,75 @@
+@import '../utils/variables';
+@import '../utils/mixins';
+
+.tasks-container {
+  text-align: center;
+  padding: 10px;
+  position: relative;
+  overflow: auto;
+  height: auto;
+
+  h2 {
+    margin-top: 5px;
+  }
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  & {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+.tasks-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  padding: 65px;
+  box-sizing: border-box;
+  justify-content: center;
+}
+
+.no-tasks-message {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 16px;
+  color: #666;
+  font-style: italic;
+}
+
+.task-card {
+  flex: 1 1 calc(33.333% - 40px);
+  max-width: 300px;
+  background-color: $primary-color;
+  @include border-radius(10px);
+  @include box-shadow($hover-border-color);
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+
+  h3 {
+    margin-bottom: 15px;
+  }
+
+  img {
+    max-width: 260px;
+    height: 200px; 
+    background-color: $primary-color;
+    @include border-radius(10px);
+    overflow: hidden;
+    object-fit: cover;
+  }
+
+  p {
+    margin: 10px 0;
+  }
+
+  a {
+    display: inline-block;
+    margin: 5px;
+    text-decoration: none;
+    color: $primary-color;
+  }
+}

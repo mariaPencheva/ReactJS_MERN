@@ -7,7 +7,6 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
-    // console.log('Stored token:', token);
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -39,8 +38,6 @@ export const getCreatedTasks = () => api.get('/tasks/created');
 export const getTakenTasks = () => api.get('/tasks/taken');
 export const getTaskDetails = (id) => api.get(`/tasks/${id}`);
 
-// export const getCatalogTasks = () => api.get('/tasks/catalog');
-
-// export const archiveTasks = (id) => api.post(`/tasks/${id}/archive`);
+export const getArchivedTasks = () => api.get('/tasks/archived');
 
 export default api;

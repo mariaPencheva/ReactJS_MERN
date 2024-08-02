@@ -11,7 +11,7 @@ const taskSchema = new Schema({
     },
     image: {
         type: String,
-        required: true
+        required: false
     },
     deadline: {
         type: Date,
@@ -26,14 +26,14 @@ const taskSchema = new Schema({
         ref: 'User',
         default: null
     }, 
-    completed: {
-        type: Boolean,
-        default: false
-    },
     completedBy: {
         type: Types.ObjectId,
         ref: 'User',
         default: null
+    },
+    completed: {
+        type: Boolean,
+        default: false
     }
 });
 

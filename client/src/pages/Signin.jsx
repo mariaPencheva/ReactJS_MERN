@@ -23,8 +23,6 @@ const Signin = () => {
     e.preventDefault();
 
     try {
-      // console.log('Submitting form data:', formData);
-
       await dispatch(signin(formData)).unwrap(); 
       navigate('/profile');
     } catch (err) {

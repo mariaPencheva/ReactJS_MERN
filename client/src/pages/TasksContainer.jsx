@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { allTasks, completedTasks, completeTask, takenTasks, createdTasks, createTask } from '../redux/taskSlice';
+import { allTasks, completedTasks, completeTask, takenTasks, createdTasks, createTask, getAllArchivedTasks } from '../redux/taskSlice';
 import CreateTask from "../components/CreateTask";
 import TaskCard from '../components/TaskCard';
 
 const TasksContainer = ({ view }) => {
   const dispatch = useDispatch();
   const tasks = useSelector((state) => state.tasks.tasks || []);
+
   const createdTasksArr = useSelector((state) => state.tasks.createdTasks || []);
   const takenTasksArr = useSelector((state) => state.tasks.takenTasks || []);
   const completedTasksArr = useSelector((state) => state.tasks.completedTasks || []); 
+  const archivedTasksArr = useSelector((state) => state.tasks.archivedTasks || []);
+
   const user = useSelector((state) => state.auth.user);
   const isLoading = useSelector((state) => state.tasks.isLoading);
-  const error = useSelector((state) => state.tasks.error);
   const [showCreateTaskForm, setShowCreateTaskForm] = useState(false);
 
   useEffect(() => {
@@ -21,20 +23,11 @@ const TasksContainer = ({ view }) => {
     } else if (view === 'takenTasks') {
       dispatch(takenTasks());
     } else if (view === 'completedTasks') {
-      // dispatch(completedTasks());
-      dispatch(completedTasks()).then((response) => {
-      console.log('Completed tasks response:', response)});
-    } else {
-      dispatch(allTasks());
+      dispatch(completedTasks());
+    } else if (view === 'archivedTasks') {
+      dispatch(getAllArchivedTasks());
     }
   }, [view, dispatch]);
-
-  // console.log('Redux tasks:', tasks);
-  // console.log('==================');
-  // console.log('Current view:', view);
-  // console.log('Redux createdTasks:', createdTasksArr);
-  // console.log('Redux takenTasksArr:', takenTasksArr);
-  // console.log('Redux completedTasksArr:', completedTasksArr);
 
   const getNoTasksMessage = () => {
     if (view === 'createdTasks') {
@@ -43,17 +36,19 @@ const TasksContainer = ({ view }) => {
       return 'No taken tasks yet.';
     } else if (view === 'completedTasks') {
       return 'No completed tasks yet.';
-    } else {
-      return 'No tasks yet.';
-    }
+    } else if (view === 'archivedTasks') {
+      return 'No archived tasks yet.';
+    } 
+    // else {
+    //   return 'No tasks yet.';
+    // }
   };
 
   const currentTasks = view === 'completedTasks' ? completedTasksArr :
-                        view === 'takenTasks' ? takenTasksArr :
-                        view === 'createdTasks' ? createdTasksArr /*tasks.filter(task => task.createdBy._id === user._id)*/ :
-                        tasks;
-
-  console.log('Current Tasks:', currentTasks);
+                      view === 'takenTasks' ? takenTasksArr :
+                      view === 'createdTasks' ? createdTasksArr :
+                      view === 'archivedTasks' ? archivedTasksArr :
+                      tasks;
 
   const handleTaskCreated = (task) => {
     setShowCreateTaskForm(false);
@@ -72,19 +67,23 @@ const TasksContainer = ({ view }) => {
         dispatch(completedTasks());
       } else {
         dispatch(allTasks());
+      dispatch(createdTasks());
       }
     });
   };
+
 
   return (
     <div className="tasks-container">
       <h2>
         {view === 'createdTasks' ? 'Your Created Tasks' :
          view === 'takenTasks' ? 'Your Taken Tasks' :
-         view === 'completedTasks' ? 'Finished Tasks' :
+         view === 'completedTasks' ? 'Your Finished Tasks' :
+         view === 'archivedTasks' ? 'Your Archive' : 
          'Tasks'}
       </h2>
-      {error && <div className="error">Error from TasksContainer: {error}</div>}
+
+
       {isLoading ? <div className="loading">Loading...</div> : (
         <>
           <p className="no-tasks-message">

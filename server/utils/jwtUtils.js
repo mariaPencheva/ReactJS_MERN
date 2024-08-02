@@ -7,14 +7,10 @@ function createToken(userData) {
         username: userData.username,
         email: userData.email,
     };
-
-    // console.log('Creating token with secret:', secret);
-
     const token = jwt.sign(payload, secret, {
         expiresIn: '30d'
     });
 
-    // console.log('Generated token from the server is:', token);
     return token;}
 
 function verifyToken(token) {
@@ -26,4 +22,4 @@ function verifyToken(token) {
     }
 }
 
-module.exports = { createToken, verifyToken };
+module.exports = { createToken, verifyToken }; 

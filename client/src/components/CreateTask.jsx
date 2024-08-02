@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import DatePicker from "react-datepicker";
+import { formatISO } from 'date-fns';
+
 import "react-datepicker/dist/react-datepicker.css";
 import {createTask} from '../api.js';
 
@@ -13,6 +15,7 @@ const CreateTask = ({ onClose, onTaskCreated }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const formattedDate = deadline.toISOString();
     const token = localStorage.getItem("token");
 
     if (!token) {
@@ -23,18 +26,10 @@ const CreateTask = ({ onClose, onTaskCreated }) => {
     const formData = new FormData();
     formData.append("name", name);
     formData.append("description", description);
-    formData.append("deadline", deadline.toISOString());
-    if (image) {
-      formData.append("image", image);
-    } else {
-      alert('Image is required!')
-      return;
-    }
-
-    // formData.forEach((value, key) => {
-    //   console.log(`${key}: ${value}`);
-    // });
-
+    formData.append("deadline", formattedDate);
+    
+    formData.append("image", image);
+    
     try {
       const response = await createTask(formData);
 
@@ -46,7 +41,7 @@ const CreateTask = ({ onClose, onTaskCreated }) => {
         alert("Failed to create task. Please try again.");
       }
     } catch (error) {
-      console.error("Error:", error.response ? error.response.data : error.message);
+      console.error("Error from CreateTask react:", error.response ? error.response.data : error.message);
       alert("An error occurred. Please try again.");
     }
   };

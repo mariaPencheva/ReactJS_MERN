@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { taskDetails, completeTask, /*completedTasks,*/ takeTask, deleteTask } from '../redux/taskSlice';
+import { taskDetails, completeTask, takeTask, deleteTask } from '../redux/taskSlice';
 import EditTaskForm from '../components/EditTaskForm';
 
 const TaskDetails = () => {
@@ -9,22 +9,17 @@ const TaskDetails = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const task = useSelector((state) => state.tasks.taskDetails);
-    // const completedTasksArr = useSelector((state) => state.tasks.completedTasks || []);
     const loggedinUser = useSelector((state) => state.auth.user);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
     useEffect(() => {
-        // console.log('Fetching details for id:', id);
-        // dispatch(taskDetails(id)).then((result) => {
-        // console.log('Task Details:', result.payload);
-    // });
-
         dispatch(taskDetails(id));
     }, [dispatch, id]);
 
-    useEffect(() => {}, [task]);
 
-    if (!task) return <div>Loading...</div>;
+    if (!task){ 
+        return <div>Loading...</div>
+    };
 
     const handleTakeTask = async () => {
         if (loggedinUser) {
@@ -58,17 +53,17 @@ const TaskDetails = () => {
         }
     };
 
-    const isOwner = task?.createdBy && loggedinUser?._id === task.createdBy._id;
+
+    const isOwner = loggedinUser && task.createdBy && loggedinUser._id === task.createdBy._id;
     const isTaskTaken = task?.takenBy !== null;
     const isTaskCompleted = task?.completed; 
-    const takenByUser = task?.takenBy?.username;
+    const takenByUser = task?.takenBy?.username || 'Unknown';
 
     const completedByYou = task?.completedBy?._id === loggedinUser?._id;
     const completedByUser = task?.completedBy?.username || 'undefined';
-    // console.log(`Completed By: ${completedByUser} from TD react`);
-
     const imageUrl = task.image ? `http://localhost:3000/uploads/${task.image}` : '/No_Image_Available.jpg';
 
+//todo make completed by : like taken by - like btn
     return (
         <div className="page-details">
             <div className="text">
@@ -81,11 +76,11 @@ const TaskDetails = () => {
                     </div>
                     <div className="info-details">
                         <h2>{task.name}</h2>
-                        <p>Description: {task.description}</p>
-                        <p>Deadline: {new Date(task.deadline).toLocaleDateString()}</p>
-                        <p>Created by: {isOwner ? 'you' : task.createdBy.username}</p>
+                        <p>{task.description}</p>
+                        <p><strong>Deadline:</strong> {new Date(task.deadline).toLocaleDateString()}</p>
+                        <p><strong>Created by:</strong> {isOwner ? 'you' : (task.createdBy ? task.createdBy.username : 'Unknown')}</p>
                         
-                        {isTaskCompleted && <p>Completed by: {completedByYou ? 'you' : completedByUser}</p>}
+                        {isTaskCompleted && <p><strong>Completed by:</strong> {completedByYou ? 'you' : completedByUser}</p>}
 
                         {loggedinUser && (
                             <div className="task-actions">
@@ -135,5 +130,3 @@ const TaskDetails = () => {
 };
 
 export default TaskDetails;
-
-//{isTaskCompleted && <p>Completed by: {completedByYou ? 'you' : completedByUser}</p>}

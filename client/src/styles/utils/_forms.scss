@@ -48,11 +48,6 @@ button {
   cursor: pointer;
   @include transition(background-color, 0.3s, ease);
   outline: none;
-
-  // &:hover,
-  // &:focus {
-  //   border: 1px solid $hover-border-color !important;
-  // }
 }
 
 .submit-button, .cancel-button {

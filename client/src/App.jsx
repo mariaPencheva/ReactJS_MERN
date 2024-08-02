@@ -48,8 +48,3 @@ function App() {
 }
 
 export default App;
-
-
-       // <Route path="/profile" 
-        //   element={<PrivateRoute element={<ProfilePage />} />} 
-        // />

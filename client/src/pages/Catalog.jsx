@@ -4,22 +4,13 @@ import { allIncompletedTasks, completeTask } from '../redux/taskSlice';
 import TaskCard from '../components/TaskCard'; 
 
 const Catalog = () => {
-  // const dispatch = useDispatch();
-  // const { tasks, isLoading, error } = useSelector((state) => state.tasks);
-  // const loggedinUser = useSelector((state) => state.auth.user);
     const dispatch = useDispatch();
-    const { incompletedTasks, isLoading, error } = useSelector((state) => state.tasks);
+    const { incompletedTasks, isLoading } = useSelector((state) => state.tasks);
     const loggedinUser = useSelector((state) => state.auth.user);
 
   useEffect(() => {
     dispatch(allIncompletedTasks());
   }, [dispatch]);
-
-
-  // useEffect(() => {
-  //   // console.log('Tasks from Redux:', tasks);
-  //   dispatch(allTasks()); 
-  // }, [dispatch]);
 
   const handleTaskCompleted = (taskId) => {
     dispatch(completeTask(taskId)); 
@@ -41,13 +32,14 @@ const Catalog = () => {
       </div>
       <div className="task-catalog">
         {isLoading && <p>Loading...</p>}
-        {error && <p>Error from Catalog: {error}</p>}
+
+
         {incompletedTasks.length > 0 ? (
           incompletedTasks.map(task => (
             <TaskCard 
               key={task._id} 
               task={task} 
-              isOwner={loggedinUser ? loggedinUser._id === task.createdBy._id : false}
+              isOwner={loggedinUser ? loggedinUser._id === (task.createdBy?._id || '') : false}
               onComplete={() => handleTaskCompleted(task._id)} 
             />
           ))
@@ -60,5 +52,3 @@ const Catalog = () => {
 };
 
 export default Catalog;
-
-

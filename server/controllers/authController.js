@@ -1,13 +1,10 @@
-// const Task = require('../models/Task');
 const bcrypt = require('bcryptjs');
 const { User } = require('../models/User');
 const { createToken } = require('../utils/jwtUtils');
+
 const { userSchemaIsValid } = require('../utils/validationSchemas');
 
-// Signup handler
 exports.signup = async (req, res) => {
-    console.log('Received signup request:', req.body);
-
     const { error } = userSchemaIsValid.validate(req.body);
 
     if (error) {
@@ -42,13 +39,11 @@ exports.signup = async (req, res) => {
     }
 };
 
-// Signin handler
 exports.signin = async (req, res) => {
     const { email, password } = req.body;
 
     try {
         const user = await User.findOne({ email });
-        // console.log(user, req.body);
 
         if (!user) {
             return res.status(400).send('User does not exist!');
@@ -68,8 +63,8 @@ exports.signin = async (req, res) => {
                 _id: user._id,
                 username: user.username,
                 createdTasks: user.createdTasks,
-                completedTasks: user.completedTasks,
-                takenTasks: user.takenTasks
+                takenTasks: user.takenTasks,
+                completedTasks: user.completedTasks
             }
         });
 
@@ -79,21 +74,7 @@ exports.signin = async (req, res) => {
     }
 };
 
-// Profile handler
 exports.getProfile = async (req, res) => {
-    // try {
-    //     const user = await User.findById(req.user._id).select('_id username');
-
-    //     if (!user) {
-    //         return res.status(404).send('User not found');
-    //     }
-
-    //     res.json({ _id: user._id, username: user.username });
-    // } catch (error) {
-    //     console.error('Error fetching user data from Server:', error);
-    //     res.status(500).send('Error fetching user data');
-    // }
-
     try {
         if (!req.user || !req.user._id) {
             return res.status(401).send('User not authenticated');

@@ -31,7 +31,12 @@ const Sidebar = ({ username, onViewChange, currentView }) => {
           <h2>Finished Tasks</h2>
         </div>
 
-
+        <div
+          className={`list-item ${currentView === 'archivedTasks' ? 'active' : ''}`}
+          onClick={() => onViewChange("archivedTasks")}
+        >
+          <h2>Archive</h2>
+        </div>
 
       </nav>
       </div>
@@ -40,10 +45,3 @@ const Sidebar = ({ username, onViewChange, currentView }) => {
 };
 
 export default Sidebar;
-
-        // <div
-        //   className={`list-item ${currentView === 'Archive' ? 'active' : ''}`}
-        //   onClick={() => onViewChange("archive")}
-        // >
-        //   <h2>Archive</h2>
-        // </div>
