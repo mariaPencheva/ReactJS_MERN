@@ -30,18 +30,18 @@ const TasksContainer = ({ view }) => {
   }, [view, dispatch]);
 
   const getNoTasksMessage = () => {
-    if (view === 'createdTasks') {
-      return 'No created tasks yet.';
-    } else if (view === 'takenTasks') {
-      return 'No taken tasks yet.';
-    } else if (view === 'completedTasks') {
-      return 'No completed tasks yet.';
-    } else if (view === 'archivedTasks') {
-      return 'No archived tasks yet.';
-    } 
-    // else {
-    //   return 'No tasks yet.';
-    // }
+    switch (view) {
+      case 'createdTasks':
+        return 'No created tasks yet.';
+      case 'takenTasks':
+        return 'No taken tasks yet.';
+      case 'completedTasks':
+        return 'No completed tasks yet.';
+      case 'archivedTasks':
+        return 'No archived tasks yet.';
+      default:
+        return 'No tasks yet.';
+    }
   };
 
   const currentTasks = view === 'completedTasks' ? completedTasksArr :

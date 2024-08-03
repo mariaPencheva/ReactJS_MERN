@@ -84,30 +84,37 @@ const TaskDetails = () => {
                         {loggedinUser && (
                             <div className="task-actions">
                                 {isTaskCompleted ? (
-                                    <div className="not-clickable">
-                                        {loggedinUser?._id === task?.completedBy?._id ? 'Completed by you' : `Completed by: ${completedByUser}`}
+                                    <div className="btns-details">
+                                        <button className="not-clickable">
+                                            {loggedinUser?._id === task?.completedBy?._id ? 'Completed by you' : `Completed by: ${completedByUser}`}
+                                        </button>
                                     </div>
                                 ) : (
                                     <>
                                         {isOwner && (
                                             <div className="btns-details">
-                                                <button onClick={handleEditClick}>Edit Task</button>
-                                                <button onClick={handleDeleteClick}>Delete Task</button>
+                                                    <button onClick={handleEditClick}>Edit Task</button>
+                                                    <button onClick={handleDeleteClick}>Delete Task</button>
                                             </div>
                                         )}
                                         {!isTaskTaken && !isOwner && (
                                             <button onClick={handleTakeTask}>Take The Task</button>
                                         )}
+
+
                                         {isTaskTaken && (
-                                            <div>
-                                                <div className="not-clickable">
+                                            <div className="btns-details">
+                                                <button className="not-clickable">
                                                     {loggedinUser?._id === task?.takenBy?._id ? 'Taken by you' : `Taken by: ${takenByUser}`}
-                                                </div>
+                                                </button>
+                                                
                                                 {loggedinUser?._id === task?.takenBy?._id && (
                                                     <button onClick={handleFinishTask}>Finish The Task</button>
                                                 )}
                                             </div>
                                         )}
+
+                                       
                                     </>
                                 )}
                             </div>

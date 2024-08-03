@@ -40,7 +40,7 @@ function Header() {
               Sign In
             </Link>
             <Link to="/signup" className={`header__button ${location.pathname === '/signup' ? 'active' : ''}`}>
-              Sign Up
+              SignUp
             </Link>
           </>
         )}

@@ -17,7 +17,7 @@ const TaskCard = ({ task, isOwner }) => {
                 <h3>{task.name || 'No Title'}</h3>
                 <p>Created by: {createdByText}</p>
                 <p>Deadline: {task.deadline ? new Date(task.deadline).toLocaleDateString() : 'No Deadline'}</p>
-                <div>
+                <div className="btns-details">
                     <button><Link to={`/tasks/${task._id}`}>Details</Link></button>
                 </div>
             </div>  

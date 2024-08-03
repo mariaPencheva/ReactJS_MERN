@@ -1,8 +1,8 @@
 import React from "react";
 
-const Sidebar = ({ username, onViewChange, currentView }) => {
+const Sidebar = ({ username, onViewChange, currentView, isOpen }) => {
   return (
-    <div className="sidebar">
+    <div >
       <div className="userName">
         {username ? <h2>Welcome back, {username}!</h2> : <h2>Welcome back!</h2>}
       </div>

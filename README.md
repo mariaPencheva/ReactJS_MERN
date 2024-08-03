@@ -26,6 +26,7 @@ Task Board is a collaborative platform where users can post tasks ranging from h
 - **Task Management**: Users can create, view, claim, edit, and delete tasks.
 - **Task Categories**: Tasks are categorized into taken, created, completed, and archived.
 - **User-Specific Views**: Logged-in users can see and manage their own tasks.
+- **Responsive Design**: The application is optimized for use on a variety of devices, including desktops, tablets, and mobile phones.
 
 
 ## Technologies Used

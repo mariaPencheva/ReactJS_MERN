@@ -9,9 +9,7 @@
         background-color: $hover-border-color;
         color: $primary-color;
         text-align: center;
-        margin-bottom: 20px;
-        height: 80%;
-        padding-top: 55px;
+        padding: 60px;
     }
 
     .task-details {
@@ -23,38 +21,49 @@
         justify-content: center;
         text-align: center;
         padding-bottom: 20px;
-
+        
         .task-content {
             display: flex;
-            gap: 20px;
-            align-items: flex-start;
+            gap: 2vw;
+
+            align-items: stretch;
             justify-content: center;
-            width: 100%;
-            max-width: 1200px;
+            width: 90%;
+            max-width: 1200px; 
+
+            @media (max-width: 768px) {
+                align-items: center;
+                flex-direction: column;
+                gap: 4vw; 
+            }
         }
 
-        .image-details {
-            width: 300px; 
-            height: 300px;
-            padding: 10px;
+        .image-details { 
+            width: 80%;
+            max-width: 300px; 
+            height: auto;
+            padding: 10px; 
             background-color: $primary-color;
             @include border-radius(10px);
             @include box-shadow($hover-border-color);
             text-align: center;
             overflow: hidden; 
+            
 
             img {
                 width: 100%;
-                height: 100%;
+                height: auto; 
                 object-fit: cover;
                 @include border-radius(10px);
+            
             }
         }
 
         .info-details {
-            width: 800px;
-            height: 300px;
-            padding: 20px;
+            width: 90%;
+            max-width: 800px; 
+            height: auto; 
+            padding: 2vw; 
             background-color: $primary-color;
             @include border-radius(10px);
             @include box-shadow($hover-border-color);
@@ -63,7 +72,7 @@
             flex-direction: column;
 
             h2 {
-                margin-top: 0; 
+                margin-bottom: 10px; 
             }
 
             p {
@@ -72,27 +81,10 @@
 
             .task-actions {
                 margin-top: auto;
+                flex-direction: column;
+                align-items: center;
             }
         }
     }
 
-    .btns-details {
-        display: flex;
-        gap: 20px;
-        justify-content: center;
-        margin-bottom: 10px;
-
-        button {
-            padding: 10px;
-            font-size: 16px;
-            color: $primary-color;
-            background-color: $hover-border-color;
-            border: 1px solid $hover-border-color;
-            @include border-radius(10px);
-            cursor: pointer;
-            @include transition(background-color, 0.3s, ease);
-        }
-
-        
-    }
 }

@@ -23,10 +23,16 @@
     @include border-radius(10px);
     @include box-shadow($hover-border-color);
     padding: 20px;
+    padding-top: 30px;
     width: 400px;
     max-width: 90%;
     position: relative;
   }
+
+  .title-text {
+    // align-content: center;
+    padding-bottom: 10px;
+    }
   
   .modal-close {
     position: absolute;

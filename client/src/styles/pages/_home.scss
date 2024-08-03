@@ -1,6 +1,16 @@
 @import '../utils/variables';
 
-.text, .info-container {
+.text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background-color: $primary-color;
+    padding-bottom: 60px;
+    padding: 20px;;
+}
+
+.info-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -16,8 +26,9 @@
 .info-boxes,
 .steps {
     display: flex;
-    flex-direction: row;
-    gap: 40px;
+    flex-wrap: wrap;
+
+    gap: 30px;
     justify-content:center;
     align-items: stretch;
 
@@ -29,18 +40,22 @@
     border-radius: 10px;
     @include box-shadow($hover-border-color);
     padding: 20px;
+
+    flex: 1 1 100%; 
     max-width: 300px;
-    flex-grow: 1; 
+    min-width: 300px;
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
 }
 
-.info h3 {
+.info h3,
+.step h3 {
     text-align: center; 
     margin-bottom: 10px; 
 }
 
-.info p {
+.info p,
+.step p {
     flex-grow: 1; 
     text-align: justify;
 }
@@ -67,19 +82,83 @@
     background-color: #222; 
     border-radius: 10px;
     padding: 20px;
+
+    flex: 1 1 100%; 
     max-width: 300px;
-    flex-grow: 1;
+    min-width: 300px;
     display: flex;
     flex-direction: column;
 }    
 
-.step h3 {
-    text-align: center;
-    margin-bottom: 10px; 
+@media (max-width: 480px) {
+    .info-boxes {
+        margin: 20px;
+        flex-direction: column; 
+        gap: 20px; 
+    }
+
+    .steps {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .info, .step {
+        max-width: calc(100% - 20px);
+        margin: 10px; 
+    }
+
+    .text p {
+        font-size: 1rem;
+        line-height: 1.2rem;
+    }
+
+    .how-it-works {
+        padding-bottom: 40px;
+    }
 }
 
-.step p {
-    flex-grow: 1;
-    text-align: justify; 
+@media (min-width: 481px) and (max-width: 768px) {
+    .info-boxes, .steps {
+        padding: 20px;
+        flex-direction: row;
+        gap: 20px; 
+        min-width: 300px;
+    }
+
+    .info, .step {
+        max-width: calc(50% - 20px); 
+        margin: 10px;
+    }
+
+    .text p {
+        font-size: 1.1rem;
+        line-height: 1.4rem;
+    }
+
+    .how-it-works {
+        padding-bottom: 60px;
+    }
 }
 
+@media (min-width: 769px) and (max-width: 1200px) {
+    .info-boxes, .steps {
+        padding: 20px;
+        margin:20px;
+        flex-direction: row;
+        gap: 20px; 
+    }
+
+    .info, .step {
+        min-width: 200px;
+        margin: 10px; 
+    }
+
+    .text p {
+        font-size: 1.2rem;
+        line-height: 1.5rem;
+    }
+
+    .how-it-works {
+        padding-bottom: 80px;
+    }
+}

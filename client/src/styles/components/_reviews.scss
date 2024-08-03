@@ -13,24 +13,45 @@
 }
 
 .slick-track {
-    display: flex !important;
-    gap: 20px !important;
-    overflow: visible !important;
-    
+    display: flex;
+    gap: 20px;
+
+    align-items: center;
+
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.slick-list {
+    overflow-y: visible !important;
+    overflow-x: hidden !important;
+
 }
 
 .review {
-  background-color: $primary-color; 
-  @include border-radius(10px);
-  padding: 25px ;
+    flex: 1 1 300px;
+    background-color: $primary-color; 
+    @include border-radius(10px);
+    padding: 25px ;
   
-  max-height: 100px !important;
-  min-height: 100px !important;
-  max-width: 900px;
+    max-width: 100%;
+    min-height: 40px !important;
 
-  text-align: justify;
-  @include box-shadow($hover-border-color);
-  transition: box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+    overflow: hidden;
+
+    @include box-shadow($hover-border-color);
+    transition: box-shadow 0.3s ease;
+
+    p {
+        text-align: center;
+        max-height: 2.5em;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+    }
   
 }
 
@@ -38,13 +59,19 @@
     cursor: pointer !important;
     transform: translateY(-10px) !important;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2) !important;
-    max-height: max-content !important ;
+    max-height: max-content;
+}
+
+.review:hover p {
+    max-height: max-content;
+    overflow: visible;
 }
 
 .review-author {
     font-weight: bold;
     color: #333;
 }
+
 
 .slick-prev:before, .slick-next:before {
     background-color: $primary-color;
@@ -59,4 +86,37 @@
 .slick-prev, .slick-next {
     background-color: $primary-color;
     color: black !important;
+}
+
+@media (max-width: 480px) {
+    .slick-slide {
+        width: 100% !important;
+    }
+
+    .review {
+        flex: 1 1 100%;
+        min-height: 100px;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+    .slick-slide {
+        width: 50% !important;
+    }
+
+    .review {
+        flex: 1 1 48%;
+        min-height: 150px;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1200px) {
+    .slick-slide {
+        width: 33.33% !important;
+    }
+
+    .review {
+        flex: 1 1 45%;
+        min-height: 150px;
+    }
 }

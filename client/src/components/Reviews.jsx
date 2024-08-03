@@ -10,17 +10,31 @@ const Reviews = () => {
         speed: 500,
         slidesToShow: 2,
         slidesToScroll: 1,
-        nextArrow: <SampleNextArrow />,
-        prevArrow: <SamplePrevArrow />
+        nextArrow: <NextArrow />,
+        prevArrow: <PrevArrow />,
+         responsive: [
+            {
+                breakpoint: 768, 
+                settings: {
+                    slidesToShow: 1, 
+                }
+            },
+            {
+                breakpoint: 1200,
+                settings: {
+                    slidesToShow: 2,
+                }
+            }
+        ]
     };
 
     const reviews = [
         { id: 1, name: "John Doe", review: "This is a great app!" },
         { id: 2, name: "Jane Smith", review: "Very useful and easy to use." },
         { id: 3, name: "Alice Johnson", review: "Highly recommend this to everyone. A great platform for both finding and posting tasks. Very intuitive!" },
-        { id: 4, name: "User 4", review: "A fantastic tool for managing tasks." },
-        { id: 5, name: "User 5", review: "It has helped me stay organized." },
-        { id: 6, name: "User 6", review: "Love the features and the design." }
+        { id: 4, name: "Alex Jones", review: "A fantastic tool for managing tasks." },
+        { id: 5, name: "Peter Norris", review: "It has helped me stay organized." },
+        { id: 6, name: "Simon Owens", review: "Love the features and the design." }
     ];
 
     return (
@@ -39,7 +53,7 @@ const Reviews = () => {
 
 }
 
-const SampleNextArrow = (props) => {
+const NextArrow = (props) => {
     const { className, style, onClick } = props;
     return (
         <div
@@ -50,7 +64,7 @@ const SampleNextArrow = (props) => {
     );
 }
 
-const SamplePrevArrow = (props) => {
+const PrevArrow = (props) => {
     const { className, style, onClick } = props;
     return (
         <div

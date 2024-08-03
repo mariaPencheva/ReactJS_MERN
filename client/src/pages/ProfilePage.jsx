@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { currProfile } from '../redux/authSlice';
-import { createdTasks, takenTasks, completedTasks /*, archiveTasks*/ } from '../redux/taskSlice';
+import { createdTasks, takenTasks, completedTasks, getAllArchivedTasks } from '../redux/taskSlice';
 
 import Sidebar from '../components/Sidebar';
 import TasksContainer from '../pages/TasksContainer';
@@ -14,6 +14,8 @@ const ProfilePage = () => {
   
   const { user, token, isLoading, error } = useSelector((state) => state.auth);
   const [currentView, setCurrentView] = useState('createdTasks');
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+
 
   useEffect(() => {
     const query = new URLSearchParams(location.search);
@@ -30,27 +32,32 @@ const ProfilePage = () => {
   }, [token, dispatch, navigate]);
 
   useEffect(() => {
-    switch (currentView) {
-      case 'createdTasks':
-        dispatch(createdTasks());
-        break;
-      case 'takenTasks':
-        dispatch(takenTasks());
-        break;
-      case 'completedTasks':
-        dispatch(completedTasks());
-        break;
-      /*case 'archive':
-        dispatch(fetchArchiveTasks());
-        break;*/
-      default:
-        break;
-    }
-  }, [currentView, dispatch]);
+  switch (currentView) {
+    case 'createdTasks':
+      dispatch(createdTasks());
+      break;
+    case 'takenTasks':
+      dispatch(takenTasks());
+      break;
+    case 'completedTasks':
+      dispatch(completedTasks());
+      break;
+    case 'archivedTasks':
+      dispatch(getAllArchivedTasks());
+      break;
+    default:
+      break;
+  }
+}, [currentView, dispatch]);
 
-  const handleViewChange = (view) => {
+  const handleViewChange = (view) => { 
     setCurrentView(view);
     navigate(`/profile?view=${view}`);
+    setSidebarOpen(false);
+  };
+
+  const toggleSidebar = () => {
+    setSidebarOpen(prevState => !prevState);
   };
 
   if (isLoading) {
@@ -65,13 +72,19 @@ const ProfilePage = () => {
     return <div>Error: {error}</div>;
   }
 
-  return (
+   return (
     <div className="profile-page">
-      <Sidebar 
-        username={user?.username} 
-        onViewChange={handleViewChange} 
-        currentView={currentView} 
-      />
+      <div className="menu-toggle" onClick={toggleSidebar}>
+        ☰
+      </div>
+      <div className={`sidebar ${isSidebarOpen ? 'open' : 'collapsed'}`}>
+        <Sidebar 
+          username={user?.username} 
+          onViewChange={handleViewChange} 
+          currentView={currentView} 
+          isOpen={isSidebarOpen}
+        />
+      </div>
       <TasksContainer view={currentView} />
     </div>
   );

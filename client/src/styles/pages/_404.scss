@@ -23,13 +23,8 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        border: none;
         cursor: pointer;
-        margin: 50px;
-        
-        &:hover {
-            border: 1px solid $hover-border-color;
-        }
+        margin: 50px;        
         
         a {
             color: $primary-color;
@@ -41,6 +36,50 @@
             justify-content: center;
             align-items: center;
         }
+    }
 
+    @media (max-width: 480px) {
+        height: auto;
+        padding: 20px;
+        
+        p {
+            padding-top: 50px; 
+            font-size: 16px;
+        }
+        
+        button {
+            width: 150px;
+            height: 35px;
+        }
+    }
+
+    @media (min-width: 481px) and (max-width: 768px) {
+        height: auto;
+        padding: 30px;
+
+        p {
+            padding-top: 100px;
+            font-size: 17px;
+        }
+
+        button {
+            width: 180px;
+            height: 37px;
+        }
+    }
+
+    @media (min-width: 769px) {
+        height: 55rem;
+        padding: 40px;
+
+        p {
+            padding-top: 200px;
+            font-size: 18px;
+        }
+
+        button {
+            width: 200px;
+            height: 40px;
+        }
     }
 }
