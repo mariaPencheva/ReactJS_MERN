@@ -84,8 +84,10 @@ To set up and run the project locally, follow these steps:
 
 1. **Start the development server and client simultaneously using `concurrently`:**
 
+   ```sh
    cd ../
    npm run dev
+   ```
 
 
 ## Usage
