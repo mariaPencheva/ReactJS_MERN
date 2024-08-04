@@ -1,48 +1,78 @@
-import React, { useState } from "react";
-import axios from "axios";
-import DatePicker from "react-datepicker";
-import { formatISO } from 'date-fns';
+import React, { useState } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { createTask } from '../api.js';
 
-import "react-datepicker/dist/react-datepicker.css";
-import {createTask} from '../api.js';
-
-const CreateTask = ({ onClose, onTaskCreated }) => {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+const CreateTask = ({ onClose, onTaskCreated, onNotify }) => {
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
   const [deadline, setDeadline] = useState(new Date());
   const [image, setImage] = useState(null);
+
+  const validateForm = () => {
+    let isValid = true;
+
+    if (name.length < 5) {
+      onNotify('Name must be at least 5 characters long!', 'error');
+      isValid = false;
+    }
+
+    if (description.length > 200) {
+      onNotify('Description must be no more than 200 characters long!', 'error');
+      isValid = false;
+    }
+
+    if (!deadline || isNaN(deadline.getTime())) {
+      onNotify('Deadline is required and must be a valid date', 'error');
+      isValid = false;
+    } else {
+      const currentDate = new Date();
+      if (deadline <= currentDate) {
+        onNotify('Deadline must be a future date', 'error');
+        isValid = false;
+      }
+    }
+
+    return isValid;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!validateForm()) {
+      return;
+    }
+
     const formattedDate = deadline.toISOString();
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
 
     if (!token) {
-      alert("You need to be logged in to create a task.");
+      onNotify('You need to be logged in to create a task!', 'error');
       return;
     }
 
     const formData = new FormData();
-    formData.append("name", name);
-    formData.append("description", description);
-    formData.append("deadline", formattedDate);
-    
-    formData.append("image", image);
-    
+    formData.append('name', name);
+    formData.append('description', description);
+    formData.append('deadline', formattedDate);
+    formData.append('image', image);
+
     try {
       const response = await createTask(formData);
 
       if (response.status === 201 || response.status === 200) {
-        alert("Task created successfully!");
+        onNotify('Task created successfully!', 'success');
         if (onTaskCreated) onTaskCreated();
         if (onClose) onClose();
       } else {
-        alert("Failed to create task. Please try again.");
+        onNotify('Failed to create task. Please try again.', 'error');
       }
     } catch (error) {
-      console.error("Error from CreateTask react:", error.response ? error.response.data : error.message);
-      alert("An error occurred. Please try again.");
+      if (error.response && error.response.data && error.response.data.message) {
+        onNotify(error.response.data.message, 'error');
+      } else {
+        onNotify('An error occurred. Please try again.', 'error');
+      }
     }
   };
 
@@ -60,6 +90,8 @@ const CreateTask = ({ onClose, onTaskCreated }) => {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              className="form-input"
+              placeholder="Enter task name"
               required
             />
           </div>
@@ -68,6 +100,8 @@ const CreateTask = ({ onClose, onTaskCreated }) => {
             <input
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              className="form-input"
+              placeholder="Enter task description"
               required
             />
           </div>
@@ -86,12 +120,13 @@ const CreateTask = ({ onClose, onTaskCreated }) => {
             <input
               type="file"
               onChange={(e) => setImage(e.target.files[0])}
+              className="form-input"
             />
           </div>
           <div className="form-group button-group">
-          <button type="submit">Create</button>
-          <button type="button" onClick={onClose}>Cancel</button>
-          </div>  
+            <button type="submit" className="form-submit-button">Create</button>
+            <button type="button" onClick={onClose} className="form-cancel-button">Cancel</button>
+          </div>
         </form>
       </div>
     </div>

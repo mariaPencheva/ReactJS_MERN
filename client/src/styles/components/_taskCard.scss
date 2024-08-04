@@ -2,36 +2,47 @@
 @import '../utils/mixins';
 
 .task-card { 
-  // width: 100%;
-  flex: 1 1 calc(33.333% - 40px);
+  flex: 0 1 300px;
   max-width: 300px;
-  padding: 20px;
-  // max-height: 405px;
-
+  width: 300px;
+  height: 405px;
+  padding: 25px;
   background-color: $primary-color;
   @include border-radius(10px);
   @include box-shadow($hover-border-color);
   text-align: center;
-  // margin: 20px;
+  margin-bottom: 20px; 
 
   box-sizing: border-box;
 
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
   h3 {
+    padding-top: 8px;
     margin-bottom: 15px;
+    font-size: 18px;
+    line-height: 1.5;
+    max-height: 3em;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   img {
-    max-width: 100%;
-    max-width: 260px; 
-    height: 200px;
-    background-color: $primary-color;
+    max-width: 250px; 
+    min-height: 200px;
+    max-height: 200px;
+
     @include border-radius(10px);
     overflow: hidden;
     object-fit: cover;
+
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
   }
 
   p {
-    margin: 10px 0;
+    margin-bottom: 5px;
   }
 
   a {
@@ -39,17 +50,45 @@
     text-decoration: none;
     color: $primary-color;
   }
+
+}
+
+.tc-details {
+  margin-top: auto;
+  font-size: 16px;
+  @include transition(background-color, 0.3s, ease);
+  outline: none;
+  border: none;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .task-card {
+    flex: 0 1 300px;
+    width: 300px;
+    margin: 20px;
+
+  }
+
+}
+
+@media (max-width: 480px) {
+  .task-card {
+    flex: 0 1 300px; 
+    width: 300px;
+    margin: 20px;
+
+  }
+
 }
 
 @media (min-width: 769px) {
   .task-card {
     flex: 1 1 calc(25% - 40px);
-    max-width: 400px;
-    padding: 30px;
+    max-width: 300px;
+    width: 300px;
+    margin: 20px;
+
   }
 
-  .task-card img {
-    max-width: 350px; 
-    height: 250px;
-  }
 }

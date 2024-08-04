@@ -1,0 +1,23 @@
+/* Notification.css */
+@import '../utils/variables';
+@import '../utils/mixins';
+
+.notification {
+    position: fixed;
+    top: 110px;
+    right: 40px;
+    padding: 10px;
+    color: $hover-border-color;
+    @include border-radius(10px);
+    @include box-shadow($hover-border-color);
+    z-index: 1001;
+  }
+  
+  .notification.success {
+    background-color: #a1e7a2;
+  }
+  
+  .notification.error { 
+    background-color: #da736b; 
+  }
+  

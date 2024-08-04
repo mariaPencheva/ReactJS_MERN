@@ -140,25 +140,22 @@
     }
 }
 
-@media (min-width: 769px) and (max-width: 1200px) {
-    .info-boxes, .steps {
+@media (min-width: 768px) and (max-width: 1023px) {
+    .info-boxes {
         padding: 20px;
-        margin:20px;
-        flex-direction: row;
-        gap: 20px; 
     }
 
-    .info, .step {
-        min-width: 200px;
-        margin: 10px; 
+    h3{
+        font-size: 17px;
+    }
+    p{
+        font-size: 16px;
     }
 
-    .text p {
-        font-size: 1.2rem;
-        line-height: 1.5rem;
-    }
-
-    .how-it-works {
-        padding-bottom: 80px;
+    .info,
+    .step {
+        flex: 1 1 calc(33.333% - 20px);
+        max-width: calc(33.333% - 20px);
+        min-width: calc(33.333% - 20px);
     }
 }

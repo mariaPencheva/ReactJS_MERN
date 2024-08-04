@@ -18,7 +18,7 @@ function Header() {
   return (
     <nav className="header">
       <Link to="/" className={`header__logo ${location.pathname === '/' ? 'active' : ''}`}>
-        <img src="/logoTMS.png" alt="Task Board" />
+        <img className="logo" src="/logoTMS.png" alt="Task Board" />
         <h3>Task Board</h3>
       </Link>
       <div className="header__buttons">

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { signup } from '../redux/authSlice'; 
 import { useNavigate } from 'react-router-dom';
 
-const Signup = () => {
+const Signup = ({ onNotify }) => {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -11,7 +11,6 @@ const Signup = () => {
     repass: ''
   });
 
-  const [error, setError] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -27,29 +26,43 @@ const Signup = () => {
 
     const emailPattern = /^[^\s@]+@[a-z.]+\.[a-z]+$/;
 
+    if (formData.username.length < 3) {
+      onNotify('Username is too short!', 'error');
+      return;
+    }
+
     if (!emailPattern.test(formData.email)) {
-      setError('Invalid email address');
+      onNotify('Invalid email address!', 'error');
       return;
     }
 
     if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters long');
+      onNotify('Password must be at least 6 characters long!', 'error');
       return;
     }
 
     if (formData.password !== formData.repass) {
-      setError('Passwords do not match');
+      onNotify('Passwords do not match!', 'error');
       return;
     }
 
-     try {
-        await dispatch(signup(formData));
+      try {
+      const resultAction = await dispatch(signup(formData));
+      
+      if (signup.fulfilled.match(resultAction)) {
+        onNotify('Registration successful!', 'success');
         navigate('/profile');
+      } else {
+        if (resultAction.payload && resultAction.payload.message === 'User already exists') {
+          onNotify('User already exists', 'error');
+        } else {
+          onNotify(resultAction.error.message || 'Registration failed', 'error');
+        }
+      }
     } catch (err) {
-      console.error('Failed to signup:', err);
-      setError('Registration failed');
+      onNotify('An error occurred. Please try again.', 'error');
     }
-    };
+  };
 
   return (
     <div className="signup-page">
@@ -115,7 +128,6 @@ const Signup = () => {
 
           <button type="submit" className="form-submit-button">Sign Up</button>
 
-          {error && <p className="error-message">{error}</p>}
         </form>
       </div>
     </div>

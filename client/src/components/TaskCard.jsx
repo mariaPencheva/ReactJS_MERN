@@ -13,12 +13,12 @@ const TaskCard = ({ task, isOwner }) => {
                 alt={task.name || 'No image available'} 
                 onError={(e) => e.target.src = '/No_Image_Available.jpg'}
             />
-            <div className="taskCardDetails">
+            <div className="tc-details">
                 <h3>{task.name || 'No Title'}</h3>
                 <p>Created by: {createdByText}</p>
                 <p>Deadline: {task.deadline ? new Date(task.deadline).toLocaleDateString() : 'No Deadline'}</p>
                 <div className="btns-details">
-                    <button><Link to={`/tasks/${task._id}`}>Details</Link></button>
+                    <button className="task-card-details"><Link to={`/tasks/${task._id}`}>Details</Link></button>
                 </div>
             </div>  
         </div>

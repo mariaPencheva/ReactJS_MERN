@@ -6,8 +6,9 @@ import { createdTasks, takenTasks, completedTasks, getAllArchivedTasks } from '.
 
 import Sidebar from '../components/Sidebar';
 import TasksContainer from '../pages/TasksContainer';
+import Notification from '../components/Notification';
 
-const ProfilePage = () => {
+const ProfilePage = ({ onNotify }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -16,6 +17,7 @@ const ProfilePage = () => {
   const [currentView, setCurrentView] = useState('createdTasks');
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
+  const [notification, setNotification] = useState(null);
 
   useEffect(() => {
     const query = new URLSearchParams(location.search);
@@ -85,7 +87,8 @@ const ProfilePage = () => {
           isOpen={isSidebarOpen}
         />
       </div>
-      <TasksContainer view={currentView} />
+        <Notification message={notification?.message} type={notification?.type} />
+        <TasksContainer view={currentView} onNotify={onNotify} />
     </div>
   );
 };

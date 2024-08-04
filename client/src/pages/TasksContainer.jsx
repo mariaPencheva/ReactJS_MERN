@@ -4,7 +4,7 @@ import { allTasks, completedTasks, completeTask, takenTasks, createdTasks, creat
 import CreateTask from "../components/CreateTask";
 import TaskCard from '../components/TaskCard';
 
-const TasksContainer = ({ view }) => {
+const TasksContainer = ({ view, onNotify }) => {
   const dispatch = useDispatch();
   const tasks = useSelector((state) => state.tasks.tasks || []);
 
@@ -67,7 +67,6 @@ const TasksContainer = ({ view }) => {
         dispatch(completedTasks());
       } else {
         dispatch(allTasks());
-      dispatch(createdTasks());
       }
     });
   };
@@ -108,7 +107,7 @@ const TasksContainer = ({ view }) => {
         </>
       )}
       {showCreateTaskForm && (
-        <CreateTask onClose={() => setShowCreateTaskForm(false)} onTaskCreated={handleTaskCreated} />
+        <CreateTask onClose={() => setShowCreateTaskForm(false)} onTaskCreated={handleTaskCreated} onNotify={onNotify} />
       )}
     </div>
   );

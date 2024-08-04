@@ -7,16 +7,28 @@
   flex-direction: row;
   gap: 1vw;
   width: 100%;
+  margin-top: auto;
+  padding-bottom: 10px;
   
   @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 1vw;
+    flex-direction: row; 
+    gap: 10px; 
+    padding-bottom: 10px;
+
+  }
+
+  @media (max-width: 480px) {
+    flex-direction: row;
+    gap: 5px; 
+    padding-bottom: 5px;
+
   }
 }
 
 button {
-  padding-bottom: 10px;
   flex: 1;
+  padding-bottom: 10px;
+  width: 100%;
   padding: 10px;
   font-size: 16px;
   font-family: $primary-font;
@@ -27,6 +39,7 @@ button {
   @include transition(background-color, 0.3s, ease);
   outline: none;
   border: none;
+  text-align: center;
 
   &.not-clickable {
     cursor: auto;
@@ -34,8 +47,20 @@ button {
     background-color: $hover-opacity-black;
     border: none;
   }
-}
 
+  @media (max-width: 768px) {
+    padding: 10px;
+    margin: 5px;
+    font-size: 14px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 8px;
+    margin: 5px;
+    font-size: 12px;
+    border-radius: 5px;
+  }
+}
 
 .create-task-button {
   display: flex;
@@ -114,4 +139,18 @@ button {
   outline: none;
   border: none;
   text-align: center;
+}
+
+.task-card-details {
+  margin-top: auto;
+  padding: 10px;
+  font-size: 16px;
+  font-family: $primary-font;
+  color: $primary-color;
+  background-color: $hover-border-color;
+  @include border-radius(10px);
+  cursor: pointer;
+  @include transition(background-color, 0.3s, ease);
+  outline: none;
+  border: none;
 }

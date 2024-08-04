@@ -62,7 +62,6 @@ const Signin = () => {
             />
           </div>
           <button type="submit" className="form-submit-button">Login</button>
-          {error && <p className="error-message">{error}</p>}
         </form>
       </div>
     </div>

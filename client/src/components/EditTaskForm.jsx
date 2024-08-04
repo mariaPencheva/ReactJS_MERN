@@ -4,7 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useDispatch, useSelector } from "react-redux";
 import { updateTask } from "../redux/taskSlice";
 
-const EditTaskModal = ({ task, onClose, onTaskUpdated }) => {
+const EditTaskModal = ({ task, onClose, onTaskUpdated, onNotify }) => {
   const dispatch = useDispatch();
   const { error, isLoading } = useSelector((state) => state.tasks);
   
@@ -20,23 +20,56 @@ const EditTaskModal = ({ task, onClose, onTaskUpdated }) => {
     setImage(null);
   }, [task]);
 
+  const validateForm = () => {
+    let isValid = true;
+
+    if (name.length < 5) {
+      onNotify('Name must be at least 5 characters long!', 'error');
+      isValid = false;
+    }
+
+    if (description.length > 200) {
+      onNotify('Description must be no more than 200 characters long!', 'error');
+      isValid = false;
+    }
+
+    if (!deadline || isNaN(deadline.getTime())) {
+      onNotify('Deadline is required and must be a valid date', 'error');
+      isValid = false;
+    } else {
+      const currentDate = new Date();
+      if (deadline <= currentDate) {
+        onNotify('Deadline must be a future date', 'error');
+        isValid = false;
+      }
+    }
+
+    return isValid;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.append("name", name);
-    formData.append("description", description);
-    formData.append("deadline", deadline.toISOString());
-    if (image) {
-      formData.append("image", image);
+    if (!validateForm()) {
+      return;
     }
 
-   try {
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('description', description);
+    formData.append('deadline', deadline.toISOString());
+    if (image) {
+      formData.append('image', image);
+    }
+
+    try {
       await dispatch(updateTask({ id: task._id, taskData: formData })).unwrap();
+      if (typeof onNotify === 'function') onNotify('Task updated successfully!', 'success');
       onTaskUpdated();
       onClose();
     } catch (err) {
       console.error('Error:', err.message);
+      if (typeof onNotify === 'function') onNotify('Failed to update task. Please try again.', 'error');
     }
   };
 

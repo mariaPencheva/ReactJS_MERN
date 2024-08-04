@@ -105,57 +105,6 @@ const takeTask = async (req, res) => {
   }
 };
 
-// const completeTask = async (req, res) => {
-//   try {
-//     const taskId = req.params.id;
-//     const userId = req.user._id;
-
-//     const task = await Task.findById(taskId);
-//     const user = await User.findById(userId);
-
-//     if (!task || !user) {
-//       return res.status(404).json({ message: "Task or User not found" });
-//     }
-
-//     if (task.completed) {
-//       return res.status(400).json({ message: "Task is already completed" });
-//     }
-
-//     if (!task.takenBy || !task.takenBy.equals(userId)) {
-//       return res.status(400).json({ message: "You have not taken this task" });
-//     }
-
-//     task.completed = true;
-//     // task.completedBy = userId;
-
-//     // user.takenTasks = user.takenTasks.filter((t) => !t.equals(taskId));
-
-//     await task.save();
-//     await User.findByIdAndUpdate(task.createdBy, {
-//         $push: { completedTasks: task._id }
-//     });
-
-//     // await user.save();
-
-//     // const populatedTask = await Task.findById(taskId)
-//     //   .populate("createdBy", "username email")
-//     //   .populate("takenBy", "username email")
-//     //   .populate("completedBy", "username");
-
-//     // if (populatedTask.completedBy) {
-//     //   populatedTask.completedBy = {
-//     //     id: populatedTask.completedBy._id,
-//     //     username: populatedTask.completedBy.username,
-//     //   };
-//     // }
-
-//     res.json(populatedTask);
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).send("Error completing task");
-//   }
-// };
-
 const completeTask = async (req, res) => {
   try {
     const taskId = req.params.id;
