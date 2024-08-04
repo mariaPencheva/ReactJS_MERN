@@ -17,7 +17,7 @@ This repository contains the Task Board application for my course at SoftUni - R
 
 ## Project Overview
 
-Task Board is a collaborative platform where users can post tasks ranging from household chores to project creation. Logged-in users can create tasks, claim tasks, and see their task lists categorized as taken, created, completed, and archived with their own completed tasks. Unregistered users can view tasks but cannot interact with them.
+The Task Board application is designed for companies and organizations to manage their tasks. Managers can create tasks, and when someone has the time to work on a specific task, they complete it and mark it as finished. Once a task is completed, the person who created it can view it in the archive of completed tasks.
 
 
 ## Features
