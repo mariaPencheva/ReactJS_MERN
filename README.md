@@ -86,7 +86,9 @@ To set up and run the project locally, follow these steps:
 
 3. **Run the script to initialize the database:**
 
-   - node initData.js
+   ```sh
+   node initData.js
+   ```
 
 ## Run the project locally   
 
