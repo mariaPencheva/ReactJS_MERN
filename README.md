@@ -13,6 +13,7 @@ This repository contains the Task Board application for my course at SoftUni - R
 - [Import Data](#import-initial-data)
 - [Run The Project](#run-the-project-locally)
 - [Usage](#usage)
+- [Scripts](#scripts)
 - [Contributing](#contributing)
 
 ## Project Overview
@@ -63,6 +64,13 @@ To set up and run the project locally, follow these steps:
    npm install   
    ```
 
+4. **Install the additional dependencies**
+
+    ```sh
+   cd ..
+   npm install   
+   ```
+
 
 ## Import Initial Data
 
@@ -96,6 +104,13 @@ To set up and run the project locally, follow these steps:
 2. **Create Tasks**: Use the interface to add new tasks to your board.
 3. **Claim Tasks**: Claim tasks to take ownership and manage them.
 4. **Manage Tasks**: Edit, delete, or mark tasks as completed.
+
+
+## Scripts
+
+- **npm run client**: Starts the client application
+- **npm run server**: Starts the server application with nodemon
+- **npm run dev**: Starts both the client and server simultaneously using concurrently
 
 
 ## Contributing
