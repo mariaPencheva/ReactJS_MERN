@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { currProfile } from '../redux/authSlice';
-import { createdTasks, takenTasks, completedTasks, getAllArchivedTasks } from '../redux/taskSlice';
+import { createdTasks, takenTasks, completedTasks, allArchivedTasks } from '../redux/taskSlice';
 
 import Sidebar from '../components/Sidebar';
 import TasksContainer from '../pages/TasksContainer';
 import Notification from '../components/Notification';
+import { VIEW_TYPES } from '../config/viewTypes';
 
 const ProfilePage = ({ onNotify }) => {
   const dispatch = useDispatch();
@@ -14,14 +15,14 @@ const ProfilePage = ({ onNotify }) => {
   const location = useLocation();
   
   const { user, token, isLoading, error } = useSelector((state) => state.auth);
-  const [currentView, setCurrentView] = useState('createdTasks');
+  const [currentView, setCurrentView] = useState(VIEW_TYPES.CREATED);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   const [notification, setNotification] = useState(null);
 
   useEffect(() => {
     const query = new URLSearchParams(location.search);
-    const view = query.get('view') || 'createdTasks';
+    const view = query.get('view') || VIEW_TYPES.CREATED;
     setCurrentView(view);
   }, [location.search]);
 
@@ -34,23 +35,23 @@ const ProfilePage = ({ onNotify }) => {
   }, [token, dispatch, navigate]);
 
   useEffect(() => {
-  switch (currentView) {
-    case 'createdTasks':
-      dispatch(createdTasks());
-      break;
-    case 'takenTasks':
-      dispatch(takenTasks());
-      break;
-    case 'completedTasks':
-      dispatch(completedTasks());
-      break;
-    case 'archivedTasks':
-      dispatch(getAllArchivedTasks());
-      break;
-    default:
-      break;
-  }
-}, [currentView, dispatch]);
+    switch (currentView) {
+      case VIEW_TYPES.CREATED:
+        dispatch(createdTasks());
+        break;
+      case VIEW_TYPES.TAKEN:
+        dispatch(takenTasks());
+        break;
+      case VIEW_TYPES.COMPLETED:
+        dispatch(completedTasks());
+        break;
+      case VIEW_TYPES.ARCHIVED:
+        dispatch(allArchivedTasks());
+        break;
+      default:
+        break;
+    }
+  }, [currentView, dispatch]);
 
   const handleViewChange = (view) => { 
     setCurrentView(view);

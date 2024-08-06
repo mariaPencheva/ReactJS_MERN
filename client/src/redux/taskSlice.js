@@ -11,7 +11,7 @@ import {
   getTakenTasks as apiGetTakenTasks,
   getTaskDetails as apiGetTaskDetails,
   getArchivedTasks as apiGetArchivedTasks
-} from '../api';
+} from '../config/api.js';
 
 const initialState = {
   tasks: [],
@@ -21,7 +21,7 @@ const initialState = {
   createdTasks: [],
   takenTasks: [],
   completedTasks: [],
-  // archivedTasks: []
+  archivedTasks: [],
   incompletedTasks: [] 
 };
 
@@ -40,7 +40,6 @@ export const allTasks = createAsyncThunk(
     }
   }
 );
-
 
 export const createTask = createAsyncThunk(
   'tasks/createTask',
@@ -186,8 +185,8 @@ export const allIncompletedTasks = createAsyncThunk(
   }
 );
 
-export const getAllArchivedTasks = createAsyncThunk(
-  'tasks/getAllArchivedTasks',
+export const allArchivedTasks = createAsyncThunk(
+  'tasks/allArchivedTasks',
   async (_, { rejectWithValue }) => {
     try {
       const response = await apiGetArchivedTasks();    
@@ -317,15 +316,15 @@ const taskSlice = createSlice({
             state.isLoading = false;
             state.error = action.payload;
           })
-          .addCase(getAllArchivedTasks.pending, (state) => {
+          .addCase(allArchivedTasks.pending, (state) => {
             state.isLoading = true;
             state.error = null;
           })
-          .addCase(getAllArchivedTasks.fulfilled, (state, action) => {
+          .addCase(allArchivedTasks.fulfilled, (state, action) => {
             state.isLoading = false;
             state.archivedTasks = action.payload;
           })
-          .addCase(getAllArchivedTasks.rejected, (state, action) => {
+          .addCase(allArchivedTasks.rejected, (state, action) => {
             state.isLoading = false;
             state.error = action.payload;
           });

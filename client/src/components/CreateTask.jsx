@@ -1,38 +1,45 @@
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { createTask } from '../api.js';
+import { createTask } from '../config/api.js';
 
 const CreateTask = ({ onClose, onTaskCreated, onNotify }) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [deadline, setDeadline] = useState(new Date());
   const [image, setImage] = useState(null);
+  const [errors, setErrors] = useState({});
 
   const validateForm = () => {
+    const newErrors = {};
     let isValid = true;
 
     if (name.length < 5) {
+      newErrors.name = true;
       onNotify('Name must be at least 5 characters long!', 'error');
       isValid = false;
     }
 
     if (description.length > 200) {
+      newErrors.description = true;
       onNotify('Description must be no more than 200 characters long!', 'error');
       isValid = false;
     }
 
     if (!deadline || isNaN(deadline.getTime())) {
+      newErrors.deadline = true;
       onNotify('Deadline is required and must be a valid date', 'error');
       isValid = false;
     } else {
       const currentDate = new Date();
       if (deadline <= currentDate) {
+        newErrors.deadline = true;
         onNotify('Deadline must be a future date', 'error');
         isValid = false;
       }
     }
 
+    setErrors(newErrors);
     return isValid;
   };
 
@@ -55,7 +62,9 @@ const CreateTask = ({ onClose, onTaskCreated, onNotify }) => {
     formData.append('name', name);
     formData.append('description', description);
     formData.append('deadline', formattedDate);
-    formData.append('image', image);
+    if (image) {
+      formData.append('image', image);
+    }
 
     try {
       const response = await createTask(formData);
@@ -90,7 +99,7 @@ const CreateTask = ({ onClose, onTaskCreated, onNotify }) => {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="form-input"
+              className={`form-input ${errors.name ? 'error' : ''}`}
               placeholder="Enter task name"
               required
             />
@@ -100,7 +109,7 @@ const CreateTask = ({ onClose, onTaskCreated, onNotify }) => {
             <input
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="form-input"
+              className={`form-input ${errors.description ? 'error' : ''}`}
               placeholder="Enter task description"
               required
             />
@@ -112,6 +121,7 @@ const CreateTask = ({ onClose, onTaskCreated, onNotify }) => {
               onChange={(date) => setDeadline(date)}
               dateFormat="yyyy-MM-dd"
               minDate={new Date()}
+              className={`form-input ${errors.deadline ? 'error' : ''}`}
               required
             />
           </div>

@@ -3,14 +3,35 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { signin } from '../redux/authSlice';
 
-const Signin = () => {
+const Signin = ({ onNotify }) => {
   const { isLoading, error } = useSelector((state) => state.auth);
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
+  const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const validateForm = () => {
+    const newErrors = {};
+    let isValid = true;
+
+    if (!formData.email) {
+      newErrors.email = true;
+      onNotify('Email is required!', 'error');
+      isValid = false;
+    }
+
+    if (!formData.password) {
+      newErrors.password = true;
+      onNotify('Password is required!', 'error');
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
 
   const handleChange = (e) => {
     setFormData({
@@ -22,11 +43,17 @@ const Signin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!validateForm()) {
+      Object.values(errors).forEach((error) => onNotify(error, 'error'));
+      return;
+    }
+
     try {
-      await dispatch(signin(formData)).unwrap(); 
+      await dispatch(signin(formData)).unwrap();
+      onNotify('Login successful!', 'success');
       navigate('/profile');
     } catch (err) {
-      console.error('Failed to login:', err);
+      onNotify(/*'Failed to login: ' + */err, 'error');
     }
   };
 
@@ -43,10 +70,11 @@ const Signin = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="form-input"
+              className={`form-input ${errors.email ? 'error' : ''}`}
               placeholder="Enter your email"
               required
             />
+            {errors.email && <span className="error-message">{errors.email}</span>}
           </div>
           <div className="form-group">
             <label htmlFor="password" className="form-label">Password</label>
@@ -56,12 +84,15 @@ const Signin = () => {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className="form-input"
+              className={`form-input ${errors.password ? 'error' : ''}`}
               placeholder="Enter your password"
               required
             />
+            {errors.password && <span className="error-message">{errors.password}</span>}
           </div>
-          <button type="submit" className="form-submit-button">Login</button>
+          <button type="submit" className="form-submit-button" disabled={isLoading}>
+            {isLoading ? 'Loading...' : 'Login'}
+          </button>
         </form>
       </div>
     </div>

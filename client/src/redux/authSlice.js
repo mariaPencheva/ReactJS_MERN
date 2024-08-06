@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { signup as apiSignup, signin as apiSignin, currProfile as apiCurrProfile } from '../api';
+import { signup as apiSignup, signin as apiSignin, currProfile as apiCurrProfile } from '../config/api.js';
 
 const initialState = {
   user: null,

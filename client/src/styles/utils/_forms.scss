@@ -29,5 +29,13 @@
     &:focus {
       border: 1px solid $hover-border-color !important;
     }
+
+
   }
+}
+
+.form-input.error,
+.error-message {
+  border: 1px solid #da736b;
+  background-color: rgb(255, 241, 241);
 }

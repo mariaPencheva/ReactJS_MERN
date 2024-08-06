@@ -13,7 +13,10 @@ api.interceptors.request.use(
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => {
+    console.error('Request error:', error);
+    Promise.reject(error);
+  }
 );
 
 export const signup = (user) => api.post('/auth/signup', user)

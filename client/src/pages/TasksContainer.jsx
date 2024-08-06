@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from 'react-redux';
-import { allTasks, completedTasks, completeTask, takenTasks, createdTasks, createTask, getAllArchivedTasks } from '../redux/taskSlice';
+import React, { useEffect, useState, useMemo } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { allTasks, completedTasks, completeTask, takenTasks, createdTasks, createTask, allArchivedTasks } from "../redux/taskSlice";
 import CreateTask from "../components/CreateTask";
-import TaskCard from '../components/TaskCard';
+import TaskCard from "../components/TaskCard";
+import { VIEW_TYPES } from '../config/viewTypes';
 
 const TasksContainer = ({ view, onNotify }) => {
   const dispatch = useDispatch();
@@ -10,7 +11,7 @@ const TasksContainer = ({ view, onNotify }) => {
 
   const createdTasksArr = useSelector((state) => state.tasks.createdTasks || []);
   const takenTasksArr = useSelector((state) => state.tasks.takenTasks || []);
-  const completedTasksArr = useSelector((state) => state.tasks.completedTasks || []); 
+  const completedTasksArr = useSelector((state) => state.tasks.completedTasks || []);
   const archivedTasksArr = useSelector((state) => state.tasks.archivedTasks || []);
 
   const user = useSelector((state) => state.auth.user);
@@ -18,75 +19,83 @@ const TasksContainer = ({ view, onNotify }) => {
   const [showCreateTaskForm, setShowCreateTaskForm] = useState(false);
 
   useEffect(() => {
-    if (view === 'createdTasks') {
-      dispatch(createdTasks());
-    } else if (view === 'takenTasks') {
-      dispatch(takenTasks());
-    } else if (view === 'completedTasks') {
-      dispatch(completedTasks());
-    } else if (view === 'archivedTasks') {
-      dispatch(getAllArchivedTasks());
+    switch (view) {
+      case VIEW_TYPES.CREATED:
+        dispatch(createdTasks());
+        break;
+      case VIEW_TYPES.TAKEN:
+        dispatch(takenTasks());
+        break;
+      case VIEW_TYPES.COMPLETED:
+        dispatch(completedTasks());
+        break;
+      case VIEW_TYPES.ARCHIVED:
+        dispatch(allArchivedTasks());
+        break;
+      default:
+        dispatch(allTasks());
+        break;
     }
   }, [view, dispatch]);
 
-  const getNoTasksMessage = () => {
+  const getNoTasksMessage = useMemo(() => {
     switch (view) {
-      case 'createdTasks':
-        return 'No created tasks yet.';
-      case 'takenTasks':
-        return 'No taken tasks yet.';
-      case 'completedTasks':
-        return 'No completed tasks yet.';
-      case 'archivedTasks':
-        return 'No archived tasks yet.';
+      case VIEW_TYPES.CREATED:
+        return "No created tasks yet.";
+      case VIEW_TYPES.TAKEN:
+        return "No taken tasks yet.";
+      case VIEW_TYPES.COMPLETED:
+        return "No completed tasks yet.";
+      case VIEW_TYPES.ARCHIVED:
+        return "No archived tasks yet.";
       default:
-        return 'No tasks yet.';
+        return "No tasks yet.";
     }
-  };
+  }, [view]);
 
-  const currentTasks = view === 'completedTasks' ? completedTasksArr :
-                      view === 'takenTasks' ? takenTasksArr :
-                      view === 'createdTasks' ? createdTasksArr :
-                      view === 'archivedTasks' ? archivedTasksArr :
-                      tasks;
+  const currentTasks = useMemo(() => {
+    switch (view) {
+      case VIEW_TYPES.CREATED:
+        return createdTasksArr;
+      case VIEW_TYPES.TAKEN:
+        return takenTasksArr;
+      case VIEW_TYPES.COMPLETED:
+        return completedTasksArr;
+      case VIEW_TYPES.ARCHIVED:
+        return archivedTasksArr;
+      default:
+        return tasks;
+    }
+  }, [ view, createdTasksArr, takenTasksArr, completedTasksArr, archivedTasksArr, tasks, ]);
 
   const handleTaskCreated = (task) => {
     setShowCreateTaskForm(false);
     dispatch(createTask(task)).then(() => {
-      if (view === 'createdTasks') {
-        dispatch(createdTasks());
-      } else {
-        dispatch(allTasks());
-      }
+      dispatch(view === VIEW_TYPES.CREATED ? createdTasks() : allTasks());
     });
   };
 
   const handleTaskCompletion = (taskId) => {
     dispatch(completeTask(taskId)).then(() => {
-      if (view === 'completedTasks') {
-        dispatch(completedTasks());
-      } else {
-        dispatch(allTasks());
-      }
+      dispatch(view === VIEW_TYPES.COMPLETED ? completedTasks() : allTasks());
     });
   };
-
 
   return (
     <div className="tasks-container">
       <h2>
-        {view === 'createdTasks' ? 'Your Created Tasks' :
-         view === 'takenTasks' ? 'Your Taken Tasks' :
-         view === 'completedTasks' ? 'Your Finished Tasks' :
-         view === 'archivedTasks' ? 'Your Archive' : 
-         'Tasks'}
+        { view === VIEW_TYPES.CREATED ? "Your Created Tasks" :
+          view === VIEW_TYPES.TAKEN ? "Your Taken Tasks" :
+          view === VIEW_TYPES.COMPLETED ? "Your Finished Tasks" :
+          view === VIEW_TYPES.ARCHIVED ? "Your Archive" : "Tasks"}
       </h2>
 
-
-      {isLoading ? <div className="loading">Loading...</div> : (
+      {isLoading ? (
+        <div className="loading">Loading...</div>
+      ) : (
         <>
           <p className="no-tasks-message">
-            {currentTasks.length === 0 && getNoTasksMessage()}
+            {currentTasks.length === 0 && getNoTasksMessage}
           </p>
           <div className="tasks-list">
             {currentTasks.map((task) => (
@@ -97,8 +106,11 @@ const TasksContainer = ({ view, onNotify }) => {
                 onFinishTask={() => handleTaskCompletion(task._id)}
               />
             ))}
-            {view === 'createdTasks' && (
-              <div className="create-task-button" onClick={() => setShowCreateTaskForm(true)}>
+            {view === VIEW_TYPES.CREATED && (
+              <div
+                className="create-task-button"
+                onClick={() => setShowCreateTaskForm(true)}
+              >
                 <h1> + </h1>
                 <h3>Create New Task</h3>
               </div>
@@ -107,7 +119,11 @@ const TasksContainer = ({ view, onNotify }) => {
         </>
       )}
       {showCreateTaskForm && (
-        <CreateTask onClose={() => setShowCreateTaskForm(false)} onTaskCreated={handleTaskCreated} onNotify={onNotify} />
+        <CreateTask
+          onClose={() => setShowCreateTaskForm(false)}
+          onTaskCreated={handleTaskCreated}
+          onNotify={onNotify}
+        />
       )}
     </div>
   );

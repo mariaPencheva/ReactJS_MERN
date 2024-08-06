@@ -10,7 +10,7 @@ const Signup = ({ onNotify }) => {
     password: '',
     repass: ''
   });
-
+  const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -21,45 +21,60 @@ const Signup = ({ onNotify }) => {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const emailPattern = /^[^\s@]+@[a-z.]+\.[a-z]+$/;
+  const validateForm = () => {
+    const newErrors = {};
+    let isValid = true;
 
     if (formData.username.length < 3) {
-      onNotify('Username is too short!', 'error');
-      return;
+      newErrors.username = 'Username is too short!';
+      isValid = false;
     }
 
+    const emailPattern = /^[^\s@]+@[a-z.]+\.[a-z]+$/;
     if (!emailPattern.test(formData.email)) {
-      onNotify('Invalid email address!', 'error');
-      return;
+      newErrors.email = 'Invalid email address!';
+      isValid = false;
     }
 
     if (formData.password.length < 6) {
-      onNotify('Password must be at least 6 characters long!', 'error');
-      return;
+      newErrors.password = 'Password must be at least 6 characters long!';
+      isValid = false;
     }
 
     if (formData.password !== formData.repass) {
-      onNotify('Passwords do not match!', 'error');
+      newErrors.repass = 'Passwords do not match!';
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return { isValid, newErrors };
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { isValid, newErrors } = validateForm();
+
+    if (!isValid) {
+      Object.values(newErrors).forEach((error, index) => {
+        setTimeout(() => {
+          onNotify(error, 'error');
+        }, index * 2500);
+      });
       return;
     }
 
-      try {
+    try {
       const resultAction = await dispatch(signup(formData));
       
       if (signup.fulfilled.match(resultAction)) {
         onNotify('Registration successful!', 'success');
         navigate('/profile');
       } else {
-        if (resultAction.payload && resultAction.payload.message === 'User already exists') {
-          onNotify('User already exists', 'error');
-        } else {
-          onNotify(resultAction.error.message || 'Registration failed', 'error');
-        }
+        setErrors({ server: 'Registration failed. Please try again.' });
+        onNotify('Registration failed. Please try again.', 'error');
       }
     } catch (err) {
+      setErrors({ server: 'An error occurred. Please try again.' });
       onNotify('An error occurred. Please try again.', 'error');
     }
   };
@@ -68,7 +83,7 @@ const Signup = ({ onNotify }) => {
     <div className="signup-page">
       <div className="signup-container">
         <form className="signup-form" onSubmit={handleSubmit}>
-          <h2>SignUp</h2>
+          <h2>Sign Up</h2>
 
           <div className="form-group">
             <label htmlFor="username" className="form-label">Username</label>
@@ -78,7 +93,7 @@ const Signup = ({ onNotify }) => {
               name="username"
               value={formData.username}
               onChange={handleChange}
-              className="form-input"
+              className={`form-input ${errors.username ? 'error' : ''}`}
               placeholder="Enter your username"
               required
             />
@@ -92,7 +107,7 @@ const Signup = ({ onNotify }) => {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="form-input"
+              className={`form-input ${errors.email ? 'error' : ''}`}
               placeholder="Enter your email"
               required
             />
@@ -106,7 +121,7 @@ const Signup = ({ onNotify }) => {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className="form-input"
+              className={`form-input ${errors.password ? 'error' : ''}`}
               placeholder="Enter your password"
               required
             />
@@ -120,14 +135,15 @@ const Signup = ({ onNotify }) => {
               name="repass"
               value={formData.repass}
               onChange={handleChange}
-              className="form-input"
+              className={`form-input ${errors.repass ? 'error' : ''}`}
               placeholder="Confirm your password"
               required
             />
           </div>
 
-          <button type="submit" className="form-submit-button">Sign Up</button>
+          {errors.server && <div className="form-error-message">{errors.server}</div>}
 
+          <button type="submit" className="form-submit-button">Sign Up</button>
         </form>
       </div>
     </div>
