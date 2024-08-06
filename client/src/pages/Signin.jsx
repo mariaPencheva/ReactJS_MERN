@@ -93,6 +93,10 @@ const Signin = ({ onNotify }) => {
           <button type="submit" className="form-submit-button" disabled={isLoading}>
             {isLoading ? 'Loading...' : 'Login'}
           </button>
+          <span className="signup-signin-link">
+            If you do not have an account, click 
+            <a href="/signup"> here</a>
+          </span>
         </form>
       </div>
     </div>

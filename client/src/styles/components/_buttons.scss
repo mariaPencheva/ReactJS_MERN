@@ -50,13 +50,11 @@ button {
 
   @media (max-width: 768px) {
     padding: 10px;
-    margin: 5px;
     font-size: 14px;
   }
 
   @media (max-width: 480px) {
     padding: 8px;
-    margin: 5px;
     font-size: 12px;
     border-radius: 5px;
   }
@@ -114,7 +112,6 @@ button {
       max-width: 200px;
       padding: 10px;
       margin: 10px;
-      
   }
 
 }

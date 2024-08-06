@@ -144,6 +144,11 @@ const Signup = ({ onNotify }) => {
           {errors.server && <div className="form-error-message">{errors.server}</div>}
 
           <button type="submit" className="form-submit-button">Sign Up</button>
+
+          <span className="signup-signin-link">
+            If you have an account, click 
+            <a href="/signin"> here</a>
+          </span>
         </form>
       </div>
     </div>

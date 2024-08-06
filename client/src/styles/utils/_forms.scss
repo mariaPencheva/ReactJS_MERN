@@ -39,3 +39,18 @@
   border: 1px solid #da736b;
   background-color: rgb(255, 241, 241);
 }
+
+.signup-signin-link {
+  padding-top: 10px;
+  display: block;
+
+  a {
+    text-decoration: none;
+    color: inherit;
+    
+    &:hover {
+      color: $border-color;
+    }
+  }
+
+}
