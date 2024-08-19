@@ -24,7 +24,6 @@ const Catalog = () => {
             </div>
             <div className="task-catalog">
                 {isLoading && <p>Loading...</p>}
-                {error && <p className="error-text">{error}</p>}
                 {incompletedTasks.length > 0 ? (
                     incompletedTasks.map(task => (
                         <TaskCard 

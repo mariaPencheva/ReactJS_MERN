@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { signup } from '../redux/authSlice'; 
 import { useNavigate } from 'react-router-dom';
 
 const Signup = ({ onNotify }) => {
+  const { isAuthenticated } = useSelector((state) => state.auth);
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -13,6 +14,12 @@ const Signup = ({ onNotify }) => {
   const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/profile');
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleChange = (e) => {
     setFormData({

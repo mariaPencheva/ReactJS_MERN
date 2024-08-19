@@ -31,7 +31,7 @@ const EditTaskModal = ({ task, onClose, onTaskUpdated, onNotify }) => {
       isValid = false;
     }
 
-    if (description.length > 200) {
+    if (description.length >= 200) {
       newErrors.description = true;
       onNotify('Description must be no more than 200 characters long!', 'error');
       isValid = false;

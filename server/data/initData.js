@@ -12,7 +12,7 @@ const hashPassword = async (password) => {
 
 const initData = async () => {
     try {
-        await mongoose.connect('mongodb://127.0.0.1:27017/TaskBoardData', { useNewUrlParser: true, useUnifiedTopology: true });
+        await mongoose.connect('mongodb://127.0.0.1:27017/TaskBoard', { useNewUrlParser: true, useUnifiedTopology: true });
 
         console.log('Connected to MongoDB');
 

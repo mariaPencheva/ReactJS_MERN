@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { signin } from '../redux/authSlice';
 
 const Signin = ({ onNotify }) => {
-  const { isLoading, error } = useSelector((state) => state.auth);
+  const { isLoading, error, isAuthenticated } = useSelector((state) => state.auth);
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -12,6 +12,12 @@ const Signin = ({ onNotify }) => {
   const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/profile');
+    }
+  }, [isAuthenticated, navigate]);
 
   const validateForm = () => {
     const newErrors = {};

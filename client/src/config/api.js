@@ -40,7 +40,6 @@ export const getCompletedTasks = () => api.get('/tasks/completed');
 export const getCreatedTasks = () => api.get('/tasks/created');
 export const getTakenTasks = () => api.get('/tasks/taken');
 export const getTaskDetails = (id) => api.get(`/tasks/${id}`);
-
 export const getArchivedTasks = () => api.get('/tasks/archived');
 
 export default api;

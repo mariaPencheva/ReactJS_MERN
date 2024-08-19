@@ -3,14 +3,21 @@
 
 .page-details { 
     background-color: $primary-color;
-    padding-bottom: 40px;
     position: relative;
 
     .text {
         background-color: $hover-border-color;
         color: $primary-color;
         text-align: center;
-        padding: 60px;
+        align-items: center;
+        height: 11vh;
+        justify-content: center;
+
+
+        @media (max-width: 768px) {
+            height: 7vh;
+        }
+
     }
 
     .task-details {
